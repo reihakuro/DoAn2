@@ -380,44 +380,46 @@ Tại mỗi chu kỳ xử lý ảnh thứ $k$ với timestamp thực tế $t_k$:
 | 13 | **Pin sạc Li-ion 18650** | Cell 18650 xả cao $\ge 10\text{A}$ (2200-2600mAh) | 5 viên | 32.000đ | 160.000đ | 3 viên cho Nhánh A (Pi), 2 viên cho Nhánh B (Motor) |
 | 14 | **Khay pin 3 cell (3S)** | Khay 3 pin 18650 nối tiếp có dây ra | 1 cái | 12.000đ | 12.000đ | Cấp nguồn 11.1V cho mạch Buck hạ áp Pi 4 |
 | 15 | **Khay pin 2 cell (2S)** | Khay 2 pin 18650 nối tiếp có dây ra | 1 cái | 10.000đ | 10.000đ | Cấp nguồn 7.4V cho mạch công suất động cơ |
-| 16 | **Mạch hạ áp Buck DC-DC** | Module XL4015 (5A có tản nhiệt nhôm) | 1 | 28.000đ | 28.000đ | Hạ từ 11.1V xuống đúng **5.15V** sạch nuôi Pi 4 |
-| 17 | **Linh kiện lọc nguồn & Đo áp** | Tụ $2200\mu\text{F}/16\text{V}$, 3 tụ $100\mu\text{F}+100\text{nF}$, trở $10\text{k}+3.3\text{k}$, TVS 5V, Polyfuse 3A | 1 gói | 6.000đ | 6.000đ | Lọc nguồn Pi, lọc nguồn 3 siêu âm, phân áp ADC, bảo vệ |
-| 18 | **Công tắc nguồn** | Công tắc bập bênh nhỏ 2 chân | 2 cái | 3.000đ | 6.000đ | Bật/tắt riêng biệt Nguồn Pi và Nguồn Motor |
+| 16 | **Mạch hạ áp Buck DC-DC** | Module XL4015 (5A có tản nhiệt nhôm) | 1 | 28.000đ | 28.000đ | Hạ từ 11.1V xuống đúng **5.15V** sạch nuôi Pi 4 & STM32 |
+| 17 | **Linh kiện bảo vệ, lọc nguồn & phân áp** | Tụ $2200\mu\text{F}/16\text{V}$, tụ lọc motor $470\mu\text{F}$, 4 tụ $100\mu\text{F}$, 9 tụ $100\text{nF}$, 2 tụ $1\text{nF}$, trở đệm $330\Omega$, trở phân áp $10\text{k}+3.3\text{k}$ (PA6, PA7), TVS 6.0V (**SMAJ6.0A** / **1.5KE6.8A**), Polyfuse 3A | 1 gói | 10.000đ | 10.000đ | Lọc nguồn Pi, lọc motor, phân áp ADC kép, đệm RC encoder & siêu âm, bảo vệ OVP |
+| 18 | **Công tắc nguồn & E-Stop** | 2 Công tắc bập bênh nhỏ + 1 Nút E-Stop cơ khí | 3 cái | 3.000đ - 5.000đ | 11.000đ | Bật/tắt riêng biệt Nguồn Pi, Nguồn Motor và Dừng khẩn |
 | 19 | **Đầu giắc cắm nguồn Pi 4** | Giắc USB Type-C đực (bo 2 chân hàn) | 1 cái | 5.000đ | 5.000đ | Hàn dây 5.15V cắm cổng Type-C của Pi 4 |
 | 20 | **Đốc sạc pin 18650 rời** | Đốc sạc đôi pin Li-ion cắm điện 220V | 1 cái | 28.000đ | 28.000đ | Sạc rời pin độc lập, an toàn phòng chống cháy nổ |
-| 21 | **Dây nối, ốc trụ đồng M3** | Dây bus Dupont cái-cái + Trụ đồng M3 | 1 gói | 30.000đ | 30.000đ | Đấu nối tín hiệu, bắt cố định bo mạch |
-| **TỔNG** | **TỔNG CHI PHÍ MUA MỚI THỰC TẾ (CỘNG CHÍNH XÁC 100%):** | | | | **597.000đ** | Dự toán toàn diện, không phát sinh chi phí ẩn |
+| 21 | **Dây nối, ốc trụ đồng M3** | Dây bus Dupont cái-cái + Trụ đồng M3 | 1 gói | 25.000đ | 25.000đ | Đấu nối tín hiệu, bắt cố định bo mạch |
+| **TỔNG** | **TỔNG CHI PHÍ MUA MỚI THỰC TẾ (CỘNG CHÍNH XÁC 100%):** | | | | **597.000đ** | Dự toán toàn diện, chuẩn hóa 100% theo bản vẽ KiCad |
 
-*(Kiểm toán phép tính số học: $48k + 16k + 54k + 28k + 115k + 32k + 5k + 4k + 10k + 160k + 12k + 10k + 28k + 6k + 6k + 5k + 28k + 30k = \mathbf{597.000đ}$. Toàn bộ tổng ngân sách dưới 600.000đ, hoàn toàn nằm trong khả năng tài chính của sinh viên).*
+*(Kiểm toán phép tính số học: $48k + 16k + 54k + 28k + 115k + 32k + 10k + 4k + 10k + 160k + 12k + 10k + 28k + 10k + 11k + 5k + 28k + 25k = \mathbf{597.000đ}$. Toàn bộ tổng ngân sách dưới 600.000đ, hoàn toàn nằm trong khả năng tài chính của sinh viên).*
 
 ---
 
 # PHẦN 5: SƠ ĐỒ ĐẤU DÂY TOÀN DIỆN & PHÂN BỔ CHÂN (PINOUT)
+*(Đồng bộ 100% theo bản vẽ Schematic KiCad: `power-source-board.kicad_sch`)*
 
-### 1. Bảng Phân Bổ Chân trên Vi Điều Khiển STM32F103C8T6
+### 1. Bảng Phân Bổ Chân trên Vi Điều Khiển STM32F103C8T6 (Blue Pill)
 
-| Ngoại vi kết nối | Chân trên Module | Chân STM32 | Cấu hình Ngoại vi / Ghi chú Kỹ thuật |
+| Ngoại vi kết nối | Chân trên Module | Chân STM32 | Cấu hình Ngoại vi / Ghi chú Kỹ thuật Cải tiến |
 |---|---|:---:|---|
-| **Nguồn cấp cho STM32** | Ngõ ra 5.15V XL4015 | **Chân 5V** | Nhận 5.15V từ Nhánh A, LDO onboard hạ 3.3V nuôi MCU |
-| | Mass chung hệ thống | **GND** | Nối chung mass toàn hệ thống |
-| **Driver Động cơ L298N** | `ENA` | **PA0** | Timer 2 Channel 1 (Hardware PWM) - Điều tốc bánh Trái |
-| | `IN1`, `IN2` | **PA1**, **PA2** | GPIO Output Push-Pull - Đảo chiều quay cụm bánh Trái |
-| | `ENB` | **PA3** | Timer 2 Channel 4 (Hardware PWM) - Điều tốc bánh Phải |
-| | `IN3`, `IN4` | **PA4**, **PA5** | GPIO Output Push-Pull - Đảo chiều quay cụm bánh Phải |
-| | `GND` | **GND** | Nối chung mass hệ thống |
-| **Cảm biến Đĩa quang (Encoder)**| **D0 (Trái)** | **PB6** | EXTI Line 6 (Ngắt ngoài sườn lên đếm xung bánh Trái) |
-| *(2 Module LM393)* | **D0 (Phải)** | **PB7** | EXTI Line 7 (Ngắt ngoài sườn lên đếm xung bánh Phải) |
-| | `VCC` / `GND` | **3.3V / GND** | Cấp nguồn nuôi cảm biến từ STM32 (kèm trở kéo pull-up) |
-| **Giám sát Điện áp Pin 3S** | Chân giữa Cầu phân áp | **PA6** | ADC1 Channel 6 (Đọc điện áp pin cảnh báo Soft-Shutdown)|
-| **Còi Báo động (Active Buzzer)** | Cực Base Transistor | **PB5** | GPIO Output (Qua trở $1\text{k}\Omega$ kích mở 2N2222 đóng mass)|
-| **3 Cảm biến Siêu âm HC-SR04** | `Trig` (Trái) | **PB12** | GPIO Output Push-Pull (Kích xung phát siêu âm Trái) |
-| *(Chân Echo chịu áp 5V an toàn)* | `Echo` (Trái) | **PB13** | GPIO Input Floating (**Chân 5V-Tolerant (FT)**) |
-| | `Trig` (Giữa) | **PB14** | GPIO Output Push-Pull (Kích xung phát siêu âm Giữa) |
-| | `Echo` (Giữa) | **PB15** | GPIO Input Floating (**Chân 5V-Tolerant (FT)**) |
-| | `Trig` (Phải) | **PB8** | GPIO Output Push-Pull (Kích xung phát siêu âm Phải) |
-| | `Echo` (Phải) | **PB9** | GPIO Input Floating (**Chân 5V-Tolerant (FT)**) |
-| **Giao tiếp UART sang Pi 4** | `TX1` | **PA9** | USART1_TX (Nối vào RX của mạch nạp USB-TTL) |
-| | `RX1` | **PA10** | USART1_RX (Nối vào TX của mạch nạp USB-TTL) |
+| **Nguồn cấp cho STM32** | Ngõ ra 5.15V XL4015 | **Chân 5V** (Pin 18) | Nhận 5.15V từ ngõ ra Buck U3, LDO onboard hạ 3.3V nuôi MCU |
+| | Mass chung hệ thống | **GND** (Pin 19) | Nối vào mặt phẳng mass chung Star Ground |
+| **Driver Động cơ L298N** | `ENA` | **PA0** | Timer 2 Channel 1 (PWM Trái) qua trở đệm $R20=330\Omega$, có trở kéo xuống $R21=10\text{k}\Omega$ |
+| | `IN1`, `IN2` | **PA1**, **PA2** | GPIO Output Push-Pull qua trở đệm $R19, R18=330\Omega$ đảo chiều cụm bánh Trái |
+| | `ENB` | **PA3** | Timer 2 Channel 4 (PWM Phải) qua trở đệm $R17=330\Omega$, có trở kéo xuống $R22=10\text{k}\Omega$ |
+| | `IN3`, `IN4` | **PA4**, **PA5** | GPIO Output Push-Pull qua trở đệm $R16, R15=330\Omega$ đảo chiều cụm bánh Phải |
+| | `PGND` (Công suất) | **PGND** | Nối chung với GND Logic duy nhất qua **`NetTie_2`** trên PCB |
+| **Cảm biến Đĩa quang (Encoder)**| **D0 (Trái)** | **PB6** | EXTI Line 6 (Ngắt đếm bánh Trái) qua **mạch lọc RC $330\Omega + 1\text{nF}$** chống tia lửa chổi than |
+| *(2 Module LM393)* | **D0 (Phải)** | **PB7** | EXTI Line 7 (Ngắt đếm bánh Phải) qua **mạch lọc RC $330\Omega + 1\text{nF}$** chống tia lửa chổi than |
+| | `VCC` / `GND` | **+5V / GND** | Cấp nguồn nuôi cảm biến từ đường nguồn sạch 5V |
+| **Giám sát Điện áp Pin 3S** | Cầu phân áp 3S_V | **PA6** | ADC1 Channel 6: Cầu trở $R1=10\text{k}\Omega / R2=3.3\text{k}\Omega$ + tụ lọc $C9=100\text{nF}$ (Hệ số $0.2481$) |
+| **Giám sát Điện áp Motor (2S)**| Cầu phân áp 12V/8V4 | **PA7** | ADC1 Channel 7: Cầu trở $R13=10\text{k}\Omega / R14=3.3\text{k}\Omega$ + tụ lọc $C10=100\text{nF}$ (*Cải tiến mới*) |
+| **Còi Báo động & LED Báo Động** | Base Transistor Q1 | **PB5** | GPIO Output qua trở $R6=1\text{k}\Omega$ kích mở 2N2222, có trở xả $R5=10\text{k}\Omega$, kích còi BZ1 và LED D3 |
+| **3 Cảm biến Siêu âm HC-SR04** | `Trig` (Trái) | **PB12** | GPIO Output Push-Pull qua trở đệm $R25=330\Omega$ (US1) |
+| *(Tích hợp phân áp Echo)* | `Echo` (Trái) | **PB13** | GPIO Input: Qua cầu chia áp $R7=1\text{k}\Omega / R8=2\text{k}\Omega$ hạ từ $5\text{V} \to 3.33\text{V}$ an toàn |
+| | `Trig` (Giữa) | **PB14** | GPIO Output Push-Pull qua trở đệm $R26=330\Omega$ (US2) |
+| | `Echo` (Giữa) | **PB15** | GPIO Input: Qua cầu chia áp $R9=1\text{k}\Omega / R10=2\text{k}\Omega$ hạ từ $5\text{V} \to 3.33\text{V}$ an toàn |
+| | `Trig` (Phải) | **PB8** | GPIO Output Push-Pull qua trở đệm $R27=330\Omega$ (US3) |
+| | `Echo` (Phải) | **PB9** | GPIO Input: Qua cầu chia áp $R11=1\text{k}\Omega / R12=2\text{k}\Omega$ hạ từ $5\text{V} \to 3.33\text{V}$ an toàn |
+| **Giao tiếp UART sang Pi 4** | `TX1` | **PA9** | USART1_TX qua trở đệm $R28=330\Omega$ nối vào RXD module CP2102 |
+| | `RX1` | **PA10** | USART1_RX qua trở đệm $R29=330\Omega$ nối vào TXD module CP2102 |
 
 ---
 
@@ -431,7 +433,13 @@ Tại mỗi chu kỳ xử lý ảnh thứ $k$ với timestamp thực tế $t_k$:
 | | `GND` | **Pin 9 (GND)** | Nối mass tín hiệu |
 | | `SDA` | **Pin 3 (GPIO 2)** | Tuyến dữ liệu I2C Bus 1 (Độc lập, không xung đột HAT) |
 | | `SCL` | **Pin 5 (GPIO 3)** | Xung nhịp I2C Bus 1 |
-| **Nguồn cấp chính hệ thống** | Cáp tự chế USB Type-C | Cổng USB Type-C Pi | Nhận điện áp $5.15\text{V}$ ổn định từ module Buck XL4015 (qua Polyfuse 3A + TVS 5V) |
+| **Nguồn cấp chính hệ thống** | Cáp tự chế USB Type-C | Cổng USB Type-C Pi | Nhận điện áp $5.15\text{V}$ ổn định từ module Buck XL4015 qua Polyfuse 3A + Diode TVS **SMAJ6.0A** (hoặc **1.5KE6.8A**) + Tụ $2200\mu\text{F}$ |
+
+> [!IMPORTANT]
+> **Cân nhắc kỹ thuật lựa chọn Diode TVS cho ngõ ra Buck 5.15V - 5.20V:**
+> * Điện áp Buck được chỉnh cố định ở mức **$5.15\text{V}$** (dải $5.10\text{V} - 5.20\text{V}$) để bù sụt áp trên cáp Type-C và Polyfuse, đảm bảo Pi 4 không bị cảnh báo Under-voltage.
+> * Với mức áp này, việc dùng TVS 5.0V thông thường (`SMAJ5.0A`) sẽ vi phạm điện áp làm việc cực đại $V_{RWM} = 5.0\text{V} < 5.2\text{V}$, khiến TVS hoạt động trong vùng tiếp giáp rò dòng ($I_R$ vọt lên hàng $\text{mA}$ khi nhiệt độ tăng cao), gây phát nhiệt và giảm tuổi thọ.
+> * Do đó, thiết kế đề xuất nâng cấp lên **`SMAJ6.0A`** ($V_{RWM} = 6.0\text{V}$, $V_{BR\_min} = 6.67\text{V}$) đối với linh kiện dán SMD, hoặc **`1.5KE6.8A` / `P6KE6.8A`** ($V_{RWM} = 5.8\text{V}$, $V_{BR\_min} = 6.45\text{V}$) đối với linh kiện cắm DIP. Lựa chọn này đảm bảo dòng rò $< 5\mu\text{A}$ ở $5.2\text{V}$, đồng thời vẫn phối hợp hoàn hảo với Polyfuse F1 để dập tắt quá áp (Crowbar OVP) nếu xảy ra sự cố chập nguồn 12V.
 
 ---
 
