@@ -1,0 +1,11 @@
+.history/
+*.lck
+~*
+*.kicad_prl
+*-save.kicad_pcb
+*-save.kicad_sch
+_autosave-*
+*.bak
+*.kicad_pcb-bak
+*.kicad_sch-bak
+
