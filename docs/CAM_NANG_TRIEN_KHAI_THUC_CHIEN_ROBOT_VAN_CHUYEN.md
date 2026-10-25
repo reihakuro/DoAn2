@@ -33,7 +33,7 @@
 
 ---
 
-### B. Danh mục Mua mới (Dự toán chính xác 100%: 597.000đ)
+### B. Danh mục Mua mới (Dự toán chuẩn hóa Kiến trúc Pin 4S: 588.000đ)
 *(Có thể đặt hàng tại Shopee hoặc ghé trực tiếp các cửa hàng linh kiện điện tử tại TP.HCM như Hshop.vn, Nshopvn, IC Đây Rồi).*
 
 | STT | Tên linh kiện | Thông số kỹ thuật chi tiết | SL | Đơn giá | Thành tiền | Nơi mua gợi ý |
@@ -44,19 +44,19 @@
 | 4 | **Màn hình OLED 0.91" I2C** | 128x32 pixel, driver SSD1306, cắm I2C Pi 4 | 1 | 28.000đ | 28.000đ | Hshop / Shopee |
 | 5 | **Bộ khung xe 4 bánh mica** | Khung chữ nhật 2 tầng, kèm 4 motor TT & 4 đĩa encoder 20 nan | 1 bộ | 115.000đ | 115.000đ | Hshop / Shopee |
 | 6 | **Driver cầu H L298N** | Bản có cánh tản nhiệt nhôm lớn, 2A liên tục/kênh | 1 | 32.000đ | 32.000đ | Hshop / Shopee |
-| 7 | **Nút nhấn dừng khẩn cấp (E-Stop)** | Nút nhấn nhả to đường kính 12-16mm hoặc nút nấm | 1 | 5.000đ | 5.000đ | Cửa hàng điện tử |
+| 7 | **Nút nhấn dừng khẩn cấp (E-Stop)** | Nút nấm tự khóa cơ khí $\Phi 16\text{mm}$, tiếp điểm NC chịu dòng 5A | 1 | 5.000đ | 5.000đ | Cửa hàng điện tử |
 | 8 | **Active Buzzer 5V + Đệm** | Còi chíp 5V + Transistor 2N2222 + Trở 1kΩ | 1 bộ | 4.000đ | 4.000đ | Cửa hàng điện tử |
 | 9 | **Hộp nhựa khay chở hàng** | Hộp nhựa mini trong suốt có nắp | 1 | 10.000đ | 10.000đ | Nhà sách / Đồ gia dụng |
-| 10 | **Cell pin Li-ion 18650** | Dòng xả $\ge 10\text{A}$ (Sony VTC4/VTC5 hoặc Lishen 2500mAh) | 5 viên | 32.000đ | 160.000đ | Shopee Pin Chuyên Nghiệp |
-| 11 | **Khay 3 pin 18650 (3S)** | Khay nối tiếp có sẵn dây đỏ đen cấp 11.1V | 1 cái | 12.000đ | 12.000đ | Hshop / Shopee |
-| 12 | **Khay 2 pin 18650 (2S)** | Khay nối tiếp có sẵn dây đỏ đen cấp 7.4V | 1 cái | 10.000đ | 10.000đ | Hshop / Shopee |
+| 10 | **Cell pin Li-ion 18650** | Dòng xả $\ge 10\text{A}$ (Sony VTC4/VTC5 hoặc Lishen 2500mAh) | 4 viên | 32.000đ | 128.000đ | Shopee Pin Chuyên Nghiệp |
+| 11 | **Khay 4 pin 18650 (4S)** | Khay nối tiếp 4 cell có sẵn dây ra Đỏ/Đen cấp $14.8\text{V}-16.8\text{V}$ | 1 cái | 15.000đ | 15.000đ | Hshop / Shopee |
+| 12 | **Khối chốt nguồn P-MOSFET** | P-MOSFET IRF9540, 2N2222, Diode Zener 12V, 1N4148, trở 10k, 1k | 1 bộ | 12.000đ | 12.000đ | Cửa hàng điện tử |
 | 13 | **Mạch hạ áp Buck XL4015** | Điện áp vào 8-36V, ra 1.25-32V, dòng tải 5A có tản nhiệt | 1 | 28.000đ | 28.000đ | Hshop / Shopee |
-| 14 | **Gói linh kiện bảo vệ & lọc nguồn** | • 1 tụ hóa $2200\mu\text{F}/16\text{V}$<br>• 3 tụ hóa $100\mu\text{F} + 3$ tụ gốm $100\text{nF}$ (siêu âm)<br>• Trở phân áp $10\text{k}\Omega + 3.3\text{k}\Omega$ (sai số 1%)<br>• 1 Diode TVS 5V (SMAJ5.0A) + 1 Polyfuse 3A | 1 gói | 6.000đ | 6.000đ | Cửa hàng linh kiện |
-| 15 | **Công tắc nguồn bập bênh** | Loại 2 chân ON/OFF nhỏ KCD11 | 2 cái | 3.000đ | 6.000đ | Cửa hàng linh kiện |
+| 14 | **Gói linh kiện bảo vệ & lọc nguồn** | • 1 tụ hóa $2200\mu\text{F}/16\text{V}$ (ngõ ra 5V Pi 4)<br>• 1 tụ hóa $470\mu\text{F}/25\text{V}$ + $100\mu\text{F}/25\text{V}$ (bù áp 4S & motor)<br>• Tụ gốm $100\text{nF}$ lọc cao tần<br>• Trở phân áp $18\text{k}\Omega + 3.3\text{k}\Omega$ (sai số 1% đo áp pin 4S)<br>• 1 Diode TVS 5V (SMAJ6.0A) + 1 Polyfuse 3A | 1 gói | 10.000đ | 10.000đ | Cửa hàng linh kiện |
+| 15 | **Nút nhấn nguồn mềm (SW1)** | Nút nhấn nhả mềm Tact Switch 4 chân $6 \times 6\text{mm}$ (hoặc nút kim loại 12mm NO) | 1 cái | 3.000đ | 3.000đ | Cửa hàng linh kiện |
 | 16 | **Đầu giắc đực USB Type-C hàn dây** | Bo hàn 2 chân VBUS và GND | 1 cái | 5.000đ | 5.000đ | Hshop / Shopee |
-| 17 | **Đốc sạc đôi pin 18650 rời** | Đốc cắm điện lưới 220V tự ngắt khi đầy 4.2V | 1 cái | 28.000đ | 28.000đ | Hshop / Shopee |
+| 17 | **Đốc sạc 4 khe pin 18650 rời** | Đốc cắm điện lưới 220V tự ngắt khi đầy 4.2V từng cell độc lập | 1 cái | 45.000đ | 45.000đ | Hshop / Shopee |
 | 18 | **Dây nối & Ốc trụ đồng M3** | • 1 tép dây bus Dupont cái-cái 20cm (40 sợi)<br>• Bộ trụ đồng M3 (10mm, 20mm, 30mm) kèm ốc tán | 1 gói | 30.000đ | 30.000đ | Hshop / Shopee |
-| **TỔNG** | **TỔNG CHI PHÍ MUA MỚI:** | **Kiểm toán chính xác 100% không phát sinh** | | | **597.000đ** | |
+| **TỔNG** | **TỔNG CHI PHÍ MUA MỚI:** | **Kiểm toán chính xác 100% không phát sinh** | | | **588.000đ** | |
 
 ---
 
@@ -64,25 +64,43 @@
 
 ```
 ========================================================================================================================
-                                      SƠ ĐỒ NGUYÊN LÝ NỐI DÂY TOÀN DIỆN HỆ THỐNG
+                                      SƠ ĐỒ NGUYÊN LÝ NỐI DÂY TOÀN DIỆN HỆ THỐNG AGV PIN 4S
 ========================================================================================================================
 
-[ KHAY PIN 3S (11.1V danh định) ]
-   (+) Cực Dương ────[Công tắc A]──► Chân IN+ của Mạch Buck XL4015 (5A)
-   (-) Cực Âm ─────────────────────► Chân IN- của Mạch Buck XL4015
-         │
-         ├───► [Điện trở 10kΩ] ───┬───► Chân PA6 của STM32 (ADC đo điện áp pin 3S)
-                                  │
-                               [3.3kΩ]
-                                  │
-                                 GND
+[ KHAY PIN 4S (14.8V danh định, 16.8V max) ]
+   (+) Cực Dương ──► J14.1 ──► [Khối Chốt P-MOSFET IRF9540 (SW1/PB0)] ──► ĐƯỜNG NGUỒN CHÍNH '4S_V' (14.8V - 16.8V)
+                                                                            │
+                                                                            ├──► [Điện trở 18kΩ] ───┬──► Chân PA6 STM32 (ADC đo pin 4S)
+                                                                            │                       │
+                                                                            │                    [3.3kΩ // C9: 100nF]
+                                                                            │                       │
+                                                                            │                      GND
+                                                                            │
+                                                                            ├──► Chân IN+ của Mạch Buck XL4015 (5A)
+                                                                            │
+                                                                            └──► [Nút Dừng Khẩn Cấp E-Stop J5]
+                                                                                      │
+                                                                                      ▼
+                                                                                 Chân 12V/VM của Driver L298N
+                                                                                 (Kèm cụm tụ C11: 470uF // C12: 100nF)
+   (-) Cực Âm ──► J14.2 (GND) ──┬──► [ĐIỂM NỐI MASS GỐC LOGIC - GND]
+                                │
+                                └──► [NetTie_2 / NT1] ──► PGND (Mass Động lực Driver L298N & C11, C12, LED D4)
 
 [ MẠCH BUCK XL4015 (Chỉnh đúng 5.15V, khóa keo biến trở) ]
-   Ngõ ra OUT+ (5.15V DC) ─────┬───► [Polyfuse 3A] ──► [TVS 5V] ──► Chân VBUS Giắc Type-C đực ──► Cổng Type-C Pi 4
+   Ngõ vào: IN+ nối đường '4S_V', IN- nối mass 'GND'
+   Ngõ ra OUT+ (5.15V DC) ─────┬───► [Polyfuse 3A] ──► [TVS SMAJ6.0A] ──► Chân VBUS Giắc Type-C đực ──► Cổng Type-C Pi 4
                                ├───► Chân 5V của STM32 Blue Pill (LDO onboard hạ áp 3.3V nuôi MCU)
                                ├───► Chân VCC của 3 Cảm biến Siêu âm HC-SR04 (Lọc tụ 100uF + 100nF từng con)
                                └───► (+) Tụ hóa 2200uF/16V mắc song song tụ gốm 100nF dập xung transient
-   Ngõ ra OUT- (GND) ──────────┴───► [ĐIỂM NỐI MASS TRUNG TÂM - STAR GROUND]
+   Ngõ ra OUT- (GND) ──────────┴───► [GND - MASS LOGIC]
+
+[ BẮT TAY SAFE-SHUTDOWN & CHỐT NGUỒN TỰ ĐỘNG ]
+   • Bật nguồn:      Nhấn nút mềm SW1 (hoặc cọc J19 vỏ xe) kéo Gate MOSFET Q2 xuống GND để cấp nguồn xe.
+   • Giữ nguồn:      STM32 boot xong lập tức xuất HIGH trên chân PB0 (POWER_HOLD) kích transistor Q3 (2N2222) giữ chốt.
+   • Nhận diện tắt:  Khi người dùng bấm SW1 lần nữa, Diode D5 (1N4148) truyền mức LOW về chân PB1 của STM32.
+   • Pi 4 Safe Halt: Pi 4 gửi xung báo trạng thái từ GPIO 26 (dtoverlay=gpio-poweroff) qua trở đệm 1kΩ về PB10 STM32.
+                     Khi Pi 4 tắt hoàn toàn (GPIO 26 hạ về 0V), STM32 hạ chân PB0 xuống LOW ngắt sạch MOSFET Q2.
 
 [ RASPBERRY PI 4 MODEL B ]
    • Cổng USB 2.0 (Đen 1) ────────► Cắm Cáp Webcam Logitech C270 HD (720p)
@@ -92,44 +110,43 @@
        - Pin 9 (GND) ─────────────► Chân GND Màn hình OLED 0.91" I2C
        - Pin 3 (GPIO 2 - SDA) ────► Chân SDA Màn hình OLED 0.91" I2C
        - Pin 5 (GPIO 3 - SCL) ────► Chân SCL Màn hình OLED 0.91" I2C
+       - Pin 37 (GPIO 26) ────────► Xuất tín hiệu Pi Halt về chân PB10 STM32
 
 [ MẠCH NẠP USB-TTL CP2102 (Cắm cổng USB Pi 4, lấy nguồn trực tiếp từ USB) ]
-   • Chân TX của CP2102 ──────────► Chân PA10 của STM32 (USART1_RX)
-   • Chân RX của CP2102 ──────────► Chân PA9 của STM32 (USART1_TX)
-   • Chân GND của CP2102 ─────────► Nối chung Mass với STM32
+   • Chân TX của CP2102 ──────────► Chân PA10 của STM32 (USART1_RX) qua trở đệm 330Ω
+   • Chân RX của CP2102 ──────────► Chân PA9 của STM32 (USART1_TX) qua trở đệm 330Ω
+   • Chân GND của CP2102 ─────────► Nối chung Mass GND với STM32
 
-[ KHAY PIN 2S (7.4V danh định) ]
-   (+) Cực Dương ────[Công tắc B]──► [Nút E-Stop Cơ Khí] ──► Chân 12V/VM của Driver L298N
-   (-) Cực Âm ──────────────────────────────────────────► Chân GND của Driver L298N ──► [STAR GROUND]
-
-[ DRIVER CẦU H L298N (Tháo bỏ jumper 5V-EN nếu có để cô lập nguồn logic) ]
-   • Chân ENA ────────────────────► PA0 của STM32 (Timer 2 Ch1 - PWM bánh Trái)
+[ DRIVER CẦU H L298N (Cấp áp 14.8V-16.8V trực tiếp, khống chế phần mềm PWM ≤ 55%) ]
+   • Chân 12V/VM ─────────────────► Nhận nguồn từ sau nút dừng khẩn cấp E-Stop J5
+   • Chân GND ────────────────────► Nối vào Net PGND (Mass Động lực, qua NT1 về J14.2)
+   • Chân ENA ────────────────────► PA0 của STM32 (Timer 2 Ch1 - PWM bánh Trái ≤ 55%)
    • Chân IN1 ────────────────────► PA1 của STM32 (Chiều 1 bánh Trái)
    • Chân IN2 ────────────────────► PA2 của STM32 (Chiều 2 bánh Trái)
-   • Chân ENB ────────────────────► PA3 của STM32 (Timer 2 Ch4 - PWM bánh Phải)
+   • Chân ENB ────────────────────► PA3 của STM32 (Timer 2 Ch4 - PWM bánh Phải ≤ 55%)
    • Chân IN3 ────────────────────► PA4 của STM32 (Chiều 1 bánh Phải)
    • Chân IN4 ────────────────────► PA5 của STM32 (Chiều 2 bánh Phải)
    • Cụm OUT1 & OUT2 ─────────────► Đấu song song 2 Động cơ TT Bánh Trái (Trước & Sau)
    • Cụm OUT3 & OUT4 ─────────────► Đấu song song 2 Động cơ TT Bánh Phải (Trước & Sau)
 
 [ 2 MODULE CẢM BIẾN ĐĨA QUANG ENCODER LM393 ]
-   • VCC của 2 Encoder ───────────► Chân 3.3V của STM32
-   • GND của 2 Encoder ───────────► Chân GND của STM32
-   • D0 Encoder Bánh Trái ────────► Chân PB6 của STM32 (Ngắt ngoài EXTI6)
-   • D0 Encoder Bánh Phải ────────► Chân PB7 của STM32 (Ngắt ngoài EXTI7)
+   • VCC của 2 Encoder ───────────► Chân 5V (hoặc 3.3V) từ nguồn Logic sạch
+   • GND của 2 Encoder ───────────► Chân GND Logic của STM32
+   • D0 Encoder Bánh Trái ────────► Chân PB6 của STM32 (Ngắt ngoài EXTI6, lọc RC 330Ω/1nF)
+   • D0 Encoder Bánh Phải ────────► Chân PB7 của STM32 (Ngắt ngoài EXTI7, lọc RC 330Ω/1nF)
 
 [ 3 CẢM BIẾN SIÊU ÂM HC-SR04 ]
-   • Chân Trig Trái ──────────────► PB12 của STM32
-   • Chân Echo Trái (5V) ─────────► PB13 của STM32 (Chân chịu áp 5V-Tolerant)
-   • Chân Trig Giữa ──────────────► PB14 của STM32
-   • Chân Echo Giữa (5V) ─────────► PB15 của STM32 (Chân chịu áp 5V-Tolerant)
-   • Chân Trig Phải ──────────────► PB8 của STM32
-   • Chân Echo Phải (5V) ─────────► PB9 của STM32 (Chân chịu áp 5V-Tolerant)
+   • Chân Trig Trái ──────────────► PB12 của STM32 (qua trở đệm 330Ω)
+   • Chân Echo Trái (5V) ─────────► PB13 của STM32 (qua cầu phân áp 1kΩ / 2kΩ về 3.33V)
+   • Chân Trig Giữa ──────────────► PB14 của STM32 (qua trở đệm 330Ω)
+   • Chân Echo Giữa (5V) ─────────► PB15 của STM32 (qua cầu phân áp 1kΩ / 2kΩ về 3.33V)
+   • Chân Trig Phải ──────────────► PB8 của STM32 (qua trở đệm 330Ω)
+   • Chân Echo Phải (5V) ─────────► PB9 của STM32 (qua cầu phân áp 1kΩ / 2kΩ về 3.33V)
 
-[ CÒI BÁO ĐỘNG BUZZER 5V ]
-   • Chân PB5 của STM32 ──────────► Điện trở 1kΩ ──► Cực Base Transistor 2N2222
+[ CÒI BÁO ĐỘNG BUZZER 5V & LED BÁO ĐỘNG ]
+   • Chân PB5 của STM32 ──────────► Điện trở 1kΩ ──► Cực Base Transistor 2N2222 (Q1)
    • Cực Emitter của 2N2222 ──────► Nối Mass GND
-   • Cực Collector của 2N2222 ────► Cực Âm (-) của Còi Buzzer
+   • Cực Collector của 2N2222 ────► Cực Âm (-) của Còi Buzzer & LED D3
    • Cực Dương (+) của Còi Buzzer ─► Đường nguồn 5.15V từ XL4015
 ========================================================================================================================
 ```
@@ -144,16 +161,22 @@ Một sai lầm kinh điển của sinh viên làm robot xe chạy STM32 + Raspb
   2. Xung phản hồi Echo của siêu âm bị nhiễu kích hoạt phanh ảo.
   3. Vi điều khiển STM32 hoặc Pi 4 bị treo ngẫu nhiên (*Hard Fault / Reset*).
 
-### Quy tắc Đi dây Mass Hình Sao Thực chiến:
-1. **Thiết lập 1 điểm Mass Trung tâm (Star Point):** Dùng một cầu đấu domino hoặc hàn một cụm 4-6 chân trên bo mạch đục lỗ làm "Mass gốc".
-2. **Kéo dây riêng biệt từ từng khối về điểm Mass gốc:**
-   * Dây 1: Cực âm khay pin 3S.
-   * Dây 2: Cực âm khay pin 2S.
-   * Dây 3: Chân OUT- của module Buck XL4015.
-   * Dây 4: Chân GND của Driver L298N (dùng dây lớn $\ge 0.5\text{mm}^2$ hoặc AWG 20).
-   * Dây 5: Chân GND của STM32.
-   * Dây 6: Chân GND của Raspberry Pi 4.
-3. Tuyệt đối không để dòng điện trở về của động cơ chạy xuyên qua bo mạch của STM32 hoặc Pi 4!
+### Quy tắc Đi dây Mass Hình Sao & Chia Mass (Split Ground) Thực chiến:
+1. **Thiết lập 1 điểm Mass Gốc Trung tâm (Star Point) tại cọc âm Pin 4S (`J14.2`):**
+   * Sử dụng 1 khối pin 4S duy nhất ($14.8\text{V} - 16.8\text{V}$). Cực âm của pin nối thẳng vào chân `J14.2` làm mốc điện thế chuẩn $0\text{V}$.
+2. **Phân tách nghiêm ngặt 2 miền Mass riêng biệt qua linh kiện `NT1` (`NetTie_2`):**
+   * **Miền Mass Logic (`GND`):**
+     - Dây nối cực âm `IN-` và ngõ ra `OUT-` của module Buck XL4015.
+     - Chân GND của bo STM32 Blue Pill.
+     - Chân GND của Raspberry Pi 4 (qua chân GND cọc Type-C).
+     - Chân GND của 3 cảm biến siêu âm, 2 encoder quang và màn hình OLED.
+     - Chân mass của cầu phân áp đo pin $R_2 (3.3\text{k}\Omega)$.
+   * **Miền Mass Động Lực (`PGND`):**
+     - Chân cọc GND của Driver cầu H L298N (`J12.2`).
+     - Cực âm tụ hóa bù sụt áp motor $C_{11} (470\mu\text{F}/25\text{V})$ và tụ gốm $C_{12} (100\text{nF})$.
+     - Cực âm LED báo nguồn motor $D_4$.
+   * **Điểm nối duy nhất (`NetTie_2`):** Hai miền mass `GND` và `PGND` chỉ gặp nhau tại duy nhất 1 điểm qua linh kiện `NT1` đặt ngay sát cọc âm pin 4S `J14.2`.
+3. Tuyệt đối không để dòng điện hoàn lưu lớn và xung cảm ứng $\frac{di}{dt}$ của động cơ chạy xuyên qua mặt phẳng mass của STM32 hoặc Pi 4!
 
 ---
 
@@ -187,7 +210,7 @@ Một sai lầm kinh điển của sinh viên làm robot xe chạy STM32 + Raspb
         │                 │  (Hộp nhựa trong suốt có nắp chốt)   │               │
         │                 └──────────────────────────────────────┘               │
         │                                                                        │
-        │       [NÚT E-STOP KHẨN CẤP]                  [CÔNG TẮC NGUỒN A & B]    │
+        │       [NÚT E-STOP KHẨN CẤP]                  [NÚT NHẤN NGUỒN MỀM SW1]    │
         └────────────────────────────────────────────────────────────────────────┘
                                  [ ĐUÔI XE (PHÍA SAU) ]
 
@@ -195,7 +218,7 @@ Một sai lầm kinh điển của sinh viên làm robot xe chạy STM32 + Raspb
 TẦNG ĐÁY (GẦM XE):
 • 4 Động cơ giảm tốc TT bắt vào 4 góc khung xe.
 • 2 Đĩa encoder 20 nan kèm 2 cảm biến quang LM393 bố trí ở 2 bánh sau (tránh va đập).
-• Khay pin 3S (bên trái) và Khay pin 2S (bên phải) bắt đối xứng sát mép để hạ trọng tâm xe.
+• Khay pin 4S (14.8V) gắn cố định ở vị trí cân đối trọng tâm tầng đáy xe.
 • Driver L298N bắt ở trung tâm tầng đáy, hướng cánh tản nhiệt nhôm ra khoảng thoáng để gió làm mát.
 • Mạch Buck XL4015 gắn ở góc sau tầng đáy, thuận tiện luồn dây Type-C lên tầng trên cấp cho Pi 4.
 ========================================================================================================================
@@ -214,19 +237,20 @@ TẦNG ĐÁY (GẦM XE):
    * Cố định 2 module đĩa quang LM393 sao cho đĩa 20 nan nằm lọt chính giữa khe chữ U của cảm biến, không bị cạ quẹt khi bánh xe quay.
    * Lắp 4 bánh cao su 65mm. Đặt xe xuống sàn đẩy thử bằng tay xem có bị kẹt hay lệch bánh không.
 2. **Cân chỉnh mạch hạ áp XL4015 (Cực kỳ quan trọng - Tránh cháy Pi 4):**
-   * Lắp 3 viên pin 18650 vào khay 3S (đo kiểm điện áp hai đầu dây ra đạt $11.1\text{V} - 12.6\text{V}$).
-   * Nối cực dương pin 3S qua Công tắc A vào chân `IN+` của XL4015, cực âm vào `IN-`.
-   * **Chưa cắm bất kỳ vi điều khiển hay Pi 4 nào!** Bật Công tắc A.
+   * Lắp 4 viên pin 18650 vào khay 4S (đo kiểm điện áp hai đầu dây ra đạt $14.8\text{V} - 16.8\text{V}$).
+   * Nối cực dương pin 4S qua khối chốt P-MOSFET IRF9540 vào chân `IN+` của XL4015, cực âm vào `IN-` (mass GND).
+   * **Chưa cắm bất kỳ vi điều khiển hay Pi 4 nào!** Nhấn nút mềm SW1 kích mở MOSFET.
    * Dùng đồng hồ VOM (thang đo DC 20V), chọc que đo vào 2 chân `OUT+` và `OUT-`. Dùng tuốc nơ vít dẹp nhỏ vặn biến trở đa vòng ngược chiều kim đồng hồ cho đến khi điện áp hiển thị **chính xác 5.15V** (sai số cho phép: $5.12\text{V} - 5.18\text{V}$).
    * Sau khi chỉnh chuẩn, **nhỏ 1 giọt keo nến hoặc sơn móng tay lên ốc biến trở** để cố định không cho trôi áp khi xe rung lắc.
 3. **Lắp ráp cụm bảo vệ ngõ ra:**
    * Hàn nối tiếp cầu chì Polyfuse 3A trên đường dương $5.15\text{V}$.
-   * Hàn diode TVS SMAJ5.0A mắc song song giữa đường dương và mass (vạch trắng catot nối dương).
+   * Hàn diode TVS SMAJ6.0A (hoặc 1.5KE6.8A) mắc song song giữa đường dương và mass (vạch trắng catot nối dương).
    * Hàn dây dương vào chân VBUS và dây âm vào chân GND của giắc Type-C đực. Bọc ống gen co nhiệt cẩn thận.
 4. **Hàn bo đệm chia nguồn & phân áp ADC:**
    * Dùng một miếng phíp đồng đục lỗ (perfboard) nhỏ $3\text{cm} \times 5\text{cm}$:
      * Tạo đường bus 5.15V và Mass hình sao.
-     * Hàn cầu phân áp gồm điện trở $10\text{k}\Omega$ (nối với cực dương pin 3S) và $3.3\text{k}\Omega$ (nối mass). Điểm giữa hàn ra một cọng dây bus cắm vào PA6 của STM32.
+     * Hàn cầu phân áp gồm điện trở $18\text{k}\Omega \pm 1\%$ (nối với đường nguồn `4S_V` sau P-MOSFET) và $3.3\text{k}\Omega \pm 1\%$ (nối mass GND). Điểm giữa hàn ra một cọng dây bus cắm vào PA6 của STM32 (điện áp tối đa $2.60\text{V} < 3.3\text{V}$ khi pin sạc đầy 16.8V).
+     * Chân PA7 của STM32 để ngỏ (NC - No Connect) do đã loại bỏ hoàn toàn nhánh nguồn 2S.
      * Hàn cụm còi Buzzer: chân dương còi nối 5.15V, chân âm nối Collector 2N2222, Emitter nối Mass, Base qua trở $1\text{k}\Omega$ ra chân PB5 STM32.
 
 ---
@@ -243,7 +267,8 @@ Sử dụng phần mềm **STM32CubeIDE** tạo project với chip `STM32F103C8T
   * Channel 4 (`PA3`): PWM Generation (Bánh Phải - chân ENB).
   * Prescaler: `71` $\rightarrow$ Tần số đếm timer: $72\text{MHz} / (71 + 1) = 1\text{MHz}$.
   * AutoReload Register (ARR): `999` $\rightarrow$ Tần số xung PWM: $1\text{MHz} / 1000 = 1\text{kHz}$ (tần số 1kHz giúp động cơ chạy êm, không bị rít tiếng kêu tần số âm thanh).
-  * Duty cycle từ $0 - 100\%$ tương ứng giá trị CCR từ $0 - 999$.
+  * Duty cycle: **Khống chế giới hạn phần mềm $\le 55\%$** (giá trị CCR từ $0 - 550$ trên thang $999$).
+  * **Lý do kỹ thuật quan trọng:** Do 4 động cơ TT (định mức 6V - 9V) nhận trực tiếp điện áp nguồn 4S ($14.8\text{V} - 16.8\text{V}$), việc giới hạn duty cycle ở mức $\le 55\%$ mang lại điện áp hiệu dụng trung bình $V_{\text{eff}} \approx 14.8\text{V} \times 55\% \approx 8.1\text{V}$, giúp động cơ chạy cực kỳ bốc, lực kéo khỏe, mát máy mà không cần tốn kém thêm mạch hạ áp phần cứng cho động cơ.
 * Cấu hình 4 chân GPIO Output cho chiều quay:
   * `PA1` (IN1), `PA2` (IN2): Chiều bánh Trái.
   * `PA4` (IN3), `PA5` (IN4): Chiều bánh Phải.
@@ -282,12 +307,18 @@ Sử dụng phần mềm **STM32CubeIDE** tạo project với chip `STM32F103C8T
   * State 2 ($50\text{ms}$): Kích xung Trig Phải (`PB8`) $10\mu\text{s}$, đọc thời gian Echo (`PB9`).
 * Áp dụng bộ lọc trung vị (Median Filter 3 mẫu) để loại trừ các giá trị đo đột biến do sóng âm phản xạ trượt.
 
-### 4. Cấu hình ADC Đo Điện Áp Pin 3S:
+### 4. Cấu hình ADC Đo Điện Áp Pin 4S & Giám sát Safe-Shutdown:
 * Cấu hình **ADC1 Channel 6 (`PA6`)**, độ phân giải 12-bit (giá trị $0 - 4095$ ứng với $0 - 3.3\text{V}$).
-* Đọc ADC chu kỳ $500\text{ms}$, tính toán:
-  $$V_{bat} = \frac{ADC\_RAW \times 3.3\text{V}}{4095} \times \frac{10\text{k}\Omega + 3.3\text{k}\Omega}{3.3\text{k}\Omega} \approx \frac{ADC\_RAW \times 3.3}{4095 \times 0.2481} \text{ (Volt)}$$
-* Nếu $V_{bat} \le 10.2\text{V}$: Bật cờ cảnh báo sớm.
-* Nếu $V_{bat} \le 9.6\text{V}$: Bật còi và gửi lệnh cưỡng bức shutdown sang Pi 4.
+* Hệ số phân áp với $R_1 = 18\text{k}\Omega, R_2 = 3.3\text{k}\Omega$:
+  $$K_{div} = \frac{3.3\text{k}\Omega}{18\text{k}\Omega + 3.3\text{k}\Omega} = \frac{3.3}{21.3} \approx 0.15493$$
+* Đọc ADC chu kỳ $500\text{ms}$, tính toán điện áp khối pin 4S:
+  $$V_{bat} = \frac{ADC\_RAW \times 3.3\text{V}}{4095 \times K_{div}} = \frac{ADC\_RAW \times 3.3}{4095 \times 0.15493} \text{ (Volt)}$$
+* Các ngưỡng quản lý năng lượng Pin 4S:
+  * $V_{bat} = 16.8\text{V}$ ($4.2\text{V}/\text{cell}$): Pin sạc đầy 100%. Áp chân PA6 $= 2.60\text{V} < 3.3\text{V}$ (tuyệt đối an toàn cho STM32).
+  * $V_{bat} = 14.8\text{V}$ ($3.7\text{V}/\text{cell}$): Điện áp danh định làm việc ổn định.
+  * $V_{bat} \le 13.6\text{V}$ ($3.4\text{V}/\text{cell}$): Bật cờ cảnh báo pin yếu (Buzzer kêu ngắt quãng 2 tiếng bíp, OLED hiển thị Low Battery).
+  * $V_{bat} \le 12.0\text{V}$ ($3.0\text{V}/\text{cell}$): Ngưỡng ngắt khẩn cấp Cutoff (chống kiệt pin hỏng cell). Kích hoạt chu trình Safe-Shutdown tự động: Gửi lệnh cưỡng bức shutdown qua UART sang Pi 4, chờ Pi tắt hẳn rồi STM32 hạ chân PB0 xuống LOW để ngắt sạch MOSFET Q2.
+* Chân **PA7** của STM32 để ngỏ (NC - No Connect), giải phóng làm chân chức năng mở rộng dự phòng.
 
 ---
 

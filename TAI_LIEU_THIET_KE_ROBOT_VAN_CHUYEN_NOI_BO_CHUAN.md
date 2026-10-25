@@ -29,65 +29,78 @@
 
 # PHẦN 2: THIẾT KẾ PHẦN CỨNG & HỆ THỐNG ĐIỆN CHỐNG BROWNOUT
 
-### 1. Phân tích Nguồn điện 2 Nhánh Độc lập & Giải pháp Chống Brownout
+### 1. Phân tích Nguồn điện Pin 4S Đồng Bộ Tập Trung & Khối Chốt Nguồn Thông Minh Chống Brownout (Rev 3.0)
 
-Một trong những rủi ro kỹ thuật lớn nhất của các hệ thống robot nhúng sử dụng Raspberry Pi 4 là hiện tượng **sụt áp đột ngột (Brownout)** dẫn đến treo hệ điều hành hoặc hỏng phân vùng thẻ nhớ SD khi CPU boost xung hoặc động cơ khởi động. Hệ thống khắc phục triệt để bằng thiết kế nguồn điện 2 nhánh cách ly hoàn toàn, vẽ rõ ràng đường cấp nguồn cho từng khối:
+Một trong những rủi ro kỹ thuật lớn nhất của các hệ thống robot nhúng sử dụng Raspberry Pi 4 là hiện tượng **sụt áp đột ngột (Brownout)** dẫn đến treo hệ điều hành hoặc hỏng phân vùng thẻ nhớ SD khi CPU boost xung hoặc động cơ khởi động. Để khắc phục triệt để, hệ thống nâng cấp lên kiến trúc **Nguồn điện Pin 4S đồng bộ tập trung ($14.8\text{V} - 16.8\text{V}$)** kết hợp **Khối chốt nguồn bán dẫn P-MOSFET IRF9540 (Smart Power Latch)** và **Cơ chế Safe-Shutdown 2 chiều giữa Pi 4 và STM32**:
 
 ```
 ========================================================================================================
-                                     SƠ ĐỒ PHÂN PHỐI NGUỒN ĐIỆN 2 NHÁNH
+                               SƠ ĐỒ PHÂN PHỐI NGUỒN ĐIỆN 4S ĐỒNG BỘ (REV 3.0)
 ========================================================================================================
 
-[ NHÁNH A: LOGIC & CẢM BIẾN ]
-Khay pin 3S (3x 18650 nối tiếp) ──[Công tắc A]──► Module Buck XL4015 (5A)
-(9.0V - 12.6V, 11.1V danh định)                    │ (Chỉnh đúng 5.15V DC, khóa keo biến trở)
-         │                                         ├─[Polyfuse 3A + TVS 5V]──► Cổng Type-C Pi 4 (5.15V)
-         │                                         │                          (Cấp nguồn Webcam C270 qua USB)
-         │                                         │                          (Cấp nguồn USB-TTL qua USB)
-         │                                         ├─────────────────────────► Chân 5V của STM32 Blue Pill
-         │                                         │                          (LDO onboard hạ 3.3V nuôi ARM,
-         │                                         │                           nuôi 2 Encoder LM393)
-         │ (Cầu phân áp: 10k / 3.3k)               ├─[Tụ 2200uF + 100nF]
-         ▼                                         │
-STM32 ADC (PA6 - Đo áp pin 3S)                     └─────────────────────────► Chân VCC 3x HC-SR04 (5.15V)
-                                                                              (Mỗi cảm biến kèm 100uF + 100nF)
+[ KHỐI PIN 4S (4 cell 18650 nối tiếp) ]
+(12.0V - 16.8V, 14.8V danh định)
+          │
+          ▼
+[ KHỐI CHỐT NGUỒN P-MOSFET IRF9540 ] ◄── (Kích mở: Nút mềm SW1 / Tự giữ chốt: STM32 PB0)
+(Kèm Zener 12V DZ1 kẹp áp Gate an toàn)
+          │
+          ├─── Tuyến nguồn chính sau chốt: Net '4S_V' (14.8V - 16.8V) ────────┐
+          │                                                                  │
+          ├──► [ Cầu phân áp 18k / 3.3k ] ──► Chân PA6 (STM32 đo pin 4S)     │
+          │                                                                  │
+          ├──► [ Module Buck XL4015 (5A) ] ──► Hạ áp 5.15V ổn định           │
+          │         │                                                        │
+          │         ├─► [Polyfuse 3A + Diode TVS 6V] ──► Cổng Type-C Pi 4    │
+          │         ├─► [Tụ 2200uF Low-ESR + 100nF]                          │
+          │         ├─► Chân 5V của STM32 Blue Pill                          │
+          │         └─► Nguồn 5V nuôi 3x Siêu âm & 2x Encoder                │
+          │                                                                  │
+          └──────────────────────────────────────────────────────────────────┘
+                                             │
+                                             ▼
+                                  [ Nút Dừng E-Stop Cơ Khí ]
+                                             │
+                                             ▼
+                              [ Cực dương 12V/VM Driver L298N ] ──► 4 Động cơ TT
+                                                                    [HẠ ÁP BẰNG SOFTWARE PWM]:
+                                                                    Khống chế Duty Cycle ≤ 55%
+                                                                    (Điện áp hiệu dụng: 7.5V - 8.2V)
 
-[ NHÁNH B: ĐỘNG LỰC CÔNG SUẤT ]
-Khay pin 2S (2x 18650 nối tiếp) ──[Công tắc B]──► [Nút E-Stop Cơ Khí] ──► Chân 12V/VM Driver L298N
-(6.0V - 8.4V, 7.4V danh định)                                            (Tản nhiệt nhôm lớn)
-                                                                                  │
-                                                                                  └──► 4 Động cơ giảm tốc TT
-[ MASS CHUNG (COMMON GROUND) ]
-Cực âm Pin A ─── Cực âm Pin B ─── GND XL4015 ─── GND Pi 4 ─── GND STM32 ─── GND Driver L298N (Nối chung)
+[ BẮT TAY TẮT MÁY AN TOÀN PI 4 ◄──► STM32 ]
+• Pi 4 GPIO 26 (dtoverlay=gpio-poweroff) ──► [ Trở đệm 1k // Trở xả 10k ] ──► STM32 PB10 (PI_HALT_DET)
+• STM32 PB0 (POWER_HOLD) ──► Transistor 2N2222 ──► Ghìm Gate P-MOSFET (Tự ngắt về 0uA khi Pi đã Halt)
 ========================================================================================================
 ```
 
-#### A. Phân tích Điện áp Dropout trên Nhánh A (Nuôi Raspberry Pi 4, STM32 & Siêu âm)
-* **Vấn đề của nguồn 2S cũ:** Pin 2S 18650 xả xuống đến $6.0\text{V} - 6.4\text{V}$. Module hạ áp buck XL4015 có điện áp sụt tối thiểu (*Dropout Voltage*) $\approx 1.5\text{V}$ ở dòng tải $2\text{A}$. Khi điện áp pin tụt xuống dưới $6.5\text{V}$, ngõ ra không thể duy trì $5.15\text{V}$, khiến điện áp cấp vào Pi 4 rớt dưới ngưỡng bảo vệ $4.63\text{V}$, gây cảnh báo Undervoltage và reset ngẫu nhiên.
-* **Giải pháp nâng cấp 3S 18650:**
-  * Sử dụng **3 cell 18650 nối tiếp (3S)**: Điện áp đầy $12.6\text{V}$, điện áp danh định $11.1\text{V}$, điện áp cắt an toàn $9.0\text{V}$ ($3.0\text{V}/\text{cell}$).
-  * Tại điểm cắt bảo vệ ($9.6\text{V}$), độ chênh áp vào - ra là: $\Delta V = 9.6\text{V} - 5.15\text{V} = 4.45\text{V} \gg 1.5\text{V}$ (dropout). Mạch XL4015 luôn hoạt động trong vùng điều chỉnh ổn áp lý tưởng, ngõ ra luôn giữ phẳng $5.15\text{V} \pm 0.05\text{V}$.
-  * Bổ sung **tụ hóa $2200\mu\text{F} / 16\text{V}$ mắc song song tụ gốm $100\text{nF}$** tại đầu ra của XL4015 để hấp thụ các xung nhọn transient khi CPU Pi 4 đột ngột boost xung nhịp xử lý ảnh OpenCV.
+#### A. Phân tích Điện áp Dropout & Đảm bảo Tuyệt đối Chống Brownout Pi 4
+* **Vấn đề của nguồn 2S/3S cũ:** Pin 2S khi xả xuống $6.0\text{V}$ sẽ không đủ độ chênh áp $1.5\text{V}$ cho Buck XL4015, gây sập nguồn Pi 4. Nguồn 3S tuy giải quyết được dropout nhưng lại phải dùng 2 khay pin riêng biệt (3S + 2S) gây cồng kềnh và khó quản lý sạc.
+* **Giải pháp nâng cấp Khối Pin 4S 18650 ($14.8\text{V} - 16.8\text{V}$):**
+  * Sử dụng **4 cell 18650 nối tiếp (4S)**: Điện áp đầy $16.8\text{V}$, điện áp danh định $14.8\text{V}$, điện áp cắt bảo vệ $12.0\text{V}$ ($3.0\text{V}/\text{cell}$).
+  * Tại điểm cắt bảo vệ cạn pin ($12.0\text{V}$), độ chênh áp vào - ra là: $\Delta V = 12.0\text{V} - 5.15\text{V} = 6.85\text{V} \gg 1.5\text{V}$ (dropout). Mạch Buck XL4015 luôn vận hành trong vùng ổn áp lý tưởng nhất, tỏa nhiệt cực thấp và ngõ ra giữ phẳng $5.15\text{V} \pm 0.05\text{V}$.
+  * Bổ sung **tụ hóa $2200\mu\text{F} / 16\text{V}$ Low-ESR mắc song song tụ gốm $100\text{nF}$** tại đầu ra của XL4015 để triệt tiêu hoàn toàn các xung nhọn transient khi CPU Pi 4 tăng tải OpenCV.
 * **Bảo vệ ngõ vào Type-C của Pi 4:**
-  * Đầu dây cấp nguồn 5.15V vào cổng Type-C của Pi 4 được trang bị thêm **cầu chì tự phục hồi (Polyfuse 3A)** chống quá dòng và **Diode TVS 5V (SMAJ5.0A)** chống xung quá áp.
-  * Biến trở tinh chỉnh điện áp trên module XL4015 sau khi cân chỉnh chuẩn $5.15\text{V}$ bằng đồng hồ vạn năng được **khóa cố định bằng keo nến hoặc sơn khóa ren** để triệt tiêu nguy cơ rung lắc cơ học làm trôi áp.
+  * Trang bị **cầu chì tự phục hồi (Polyfuse 3A)** chống quá dòng và **Diode TVS 6.0V (SMAJ6.0A hoặc 1.5KE6.8A)** dập xung quá áp Crowbar OVP.
+  * Biến trở tinh chỉnh điện áp trên module XL4015 sau khi cân chỉnh chuẩn $5.15\text{V}$ được **khóa cố định bằng keo nến / sơn khóa ren**.
 
 #### B. Nguồn cấp cho Vi điều khiển STM32 Blue Pill
-* **Lựa chọn phương án cấp nguồn sạch:** Nguồn nuôi STM32 được trích trực tiếp từ **ngõ ra 5.15V của mạch hạ áp XL4015 (Nhánh A)** đưa vào chân `5V` của bo mạch Blue Pill.
-  * Dòng tiêu thụ của STM32 Blue Pill rất nhỏ: chỉ $\approx 40 - 50\text{mA}$ khi chạy full xung 72MHz.
-  * IC ổn áp LDO onboard (RT9193 hoặc AMS1117-3.3) trên bo Blue Pill hạ áp từ 5.15V xuống 3.3V sạch nuôi chip vi điều khiển ARM Cortex-M3 và cấp ra chân 3.3V nuôi 2 module cảm biến đĩa quang LM393.
-  * *Lý do loại trừ nguồn 5V từ Driver L298N:* Tuyệt đối không lấy nguồn từ chân 5V của L298N (IC 78M05 onboard) vì IC này tỏa nhiệt lớn khi cấp nguồn 7.4V và dễ dẫn nhiễu xung chổi than từ motor sang làm treo vi điều khiển.
+* Nguồn nuôi STM32 trích từ **ngõ ra 5.15V của mạch hạ áp XL4015** đưa vào chân `5V` của bo mạch Blue Pill. Dòng tiêu thụ chỉ $\approx 40 - 50\text{mA}$.
+* IC ổn áp LDO onboard hạ xuống 3.3V sạch nuôi nhân ARM Cortex-M3 và cấp ra chân 3.3V nuôi 2 module cảm biến đĩa quang LM393.
+* Tuyệt đối không lấy nguồn từ chân 5V của L298N để tránh nhiễu chổi than động cơ làm treo vi điều khiển.
 
-#### C. Mạch Giám sát Pin 3 Cấp Độ & Cơ chế Tắt Mềm (Soft-Shutdown)
-* **Mạch cầu phân áp:** Đấu nối từ cực dương khay pin 3S về chân **PA6 (ADC1_Channel_6)** của STM32 qua 2 điện trở chính xác: $R_1 = 10\text{k}\Omega$ (kéo lên Pin (+)) và $R_2 = 3.3\text{k}\Omega$ (kéo xuống Mass).
-  $$V_{ADC} = V_{Pin} \times \frac{R_2}{R_1 + R_2} = V_{Pin} \times \frac{3.3}{10 + 3.3} \approx V_{Pin} \times 0.2481$$
-  * Khi pin đầy ($12.6\text{V}$): $V_{ADC} \approx 3.126\text{V} < 3.3\text{V}$ (an toàn tuyệt đối cho chân ADC STM32).
-  * Khi pin ở mức cảnh báo sớm ($10.2\text{V}$): $V_{ADC} \approx 2.531\text{V}$.
-  * Khi pin ở mức cưỡng bức tắt máy ($9.6\text{V}$): $V_{ADC} \approx 2.382\text{V}$.
-* **Quy trình Cảnh báo 2 Cấp độ & Xử lý Sau Shutdown:**
-  1. **Cấp 1 - Cảnh báo sớm ($V_{bat} \le 10.2\text{V}$, tương đương $3.4\text{V}/\text{cell}$, dung lượng còn $\approx 15 - 20\%$):** STM32 gửi cờ cảnh báo `ALERT_BATTERY_LOW` lên Web dashboard, bật còi bíp ngắt quãng. Xe hoàn thành nốt lộ trình đến trạm hiện tại rồi khóa nhận nhiệm vụ mới để bảo vệ pin.
-  2. **Cấp 2 - Cưỡng bức Shutdown ($V_{bat} \le 9.6\text{V}$, tương đương $3.2\text{V}/\text{cell}$, dung lượng còn $\approx 5 - 8\%$):** STM32 lập tức phanh dừng xe, gửi gói tin khẩn cấp `0x04 (CMD_FORCED_SHUTDOWN)` qua UART lên Pi 4. Pi 4 ghi log trạng thái và gọi lệnh `sudo shutdown -h now`. Ở mức 9.6V, mạch XL4015 vẫn có biên độ điện áp $\Delta V = 4.45\text{V} \gg 1.5\text{V}$ dropout, đảm bảo Pi 4 có dư dả $20 - 30\text{ giây}$ để hoàn tất lưu trữ dữ liệu an toàn mà không bao giờ bị brownout.
-  3. **Xử lý sau khi Pi tắt (Bảo vệ xả sâu):** Khi Pi 4 hoàn tất shutdown (trạng thái halt), bo mạch Pi vẫn tiêu thụ $\approx 50 - 100\text{mA}$. STM32 duy trì bộ đếm thời gian trễ **$40\text{ giây}$** sau khi phát lệnh shutdown (đảm bảo đèn LED xanh ACT trên Pi 4 đã ngừng nhấp nháy), sau đó kích hoạt còi bíp liên tục cảnh báo kỹ sư đến gạt công tắc cơ (Công tắc A) để ngắt hoàn toàn nguồn điện, chống xả kiệt pin.
+#### C. Mạch Giám sát Pin 4S & Cơ chế Tự Ngắt Tuyệt Đối (Zero-Power Standby $0\,\mu\text{A}$)
+* **Mạch cầu phân áp đo Pin 4S:** Đấu nối từ đường `4S_V` về chân **PA6 (ADC1_Channel_6)** của STM32 qua 2 điện trở chính xác: $R_1 = 18\text{k}\Omega \pm 1\%$ và $R_2 = 3.3\text{k}\Omega \pm 1\%$:
+  $$V_{ADC} = V_{\text{Pin\_4S}} \times \frac{R_2}{R_1 + R_2} = V_{\text{Pin\_4S}} \times \frac{3.3}{18 + 3.3} \approx V_{\text{Pin\_4S}} \times 0.15493$$
+  * Khi pin đầy ($16.8\text{V}$): $V_{ADC} \approx 2.603\text{V} < 3.3\text{V}$ (an toàn tuyệt đối cho chân ADC STM32, không lo cháy chân).
+  * Khi pin ở mức cảnh báo sớm ($13.6\text{V}$, tương đương $3.4\text{V}/\text{cell}$): $V_{ADC} \approx 2.107\text{V}$.
+  * Khi pin ở mức cưỡng bức tắt máy ($12.0\text{V}$, tương đương $3.0\text{V}/\text{cell}$): $V_{ADC} \approx 1.859\text{V}$.
+* **Quy trình Cảnh báo 2 Cấp độ & Safe-Shutdown Tự Ngắt Nguồn Hoàn Toàn:**
+  1. **Cấp 1 - Cảnh báo sớm ($V_{bat} \le 13.6\text{V}$, dung lượng còn $\approx 15 - 20\%$):** STM32 gửi cờ cảnh báo `ALERT_BATTERY_LOW` lên Web dashboard, bật còi bíp ngắt quãng. Xe hoàn thành nốt lộ trình đến trạm hiện tại rồi khóa nhận nhiệm vụ mới để bảo vệ pin.
+  2. **Cấp 2 - Cưỡng bức Shutdown ($V_{bat} \le 12.0\text{V}$, dung lượng còn $\approx 5 - 8\%$):** STM32 lập tức dừng bánh xe, gửi gói tin khẩn cấp `0x04 (CMD_FORCED_SHUTDOWN)` qua UART lên Pi 4. Pi 4 thực hiện `sudo poweroff` (unmount ổ đĩa an toàn).
+  3. **Cơ chế Tự Ngắt Nguồn Vật Lý Tuyệt Đối ($0\,\mu\text{A}$):**
+     * Khi nhân Linux của Pi 4 hoàn tất unmount thẻ nhớ và chuyển sang trạng thái Halt, chân **GPIO 26** của Pi 4 (cấu hình qua `dtoverlay=gpio-poweroff`) sẽ nhảy lên mức **HIGH (3.3V)**.
+     * Chân **PB10** của STM32 nhận diện xung HIGH này $\to$ STM32 hạ chân **PB0 (`POWER_HOLD`)** từ mức HIGH xuống LOW $\to$ Transistor Q3 đóng lại $\to$ P-MOSFET Q2 đóng hoàn toàn.
+     * **Kết quả:** Nguồn điện cấp cho cả Pi 4, STM32, L298N và toàn bộ cảm biến bị **ngắt sạch sẽ $100\%$ (dòng chờ $0\,\mu\text{A}$)**. Khắc phục triệt để nguy cơ kiệt pin hay hỏng hệ điều hành.
 
 ---
 
@@ -377,18 +390,18 @@ Tại mỗi chu kỳ xử lý ảnh thứ $k$ với timestamp thực tế $t_k$:
 | 10 | **Nút dừng khẩn cấp cơ khí** | Nút nhấn nhả to (E-Stop Push Button) | 1 | 5.000đ | 5.000đ | Đấu nối tiếp đường nguồn pin cấp cho L298N |
 | 11 | **Còi báo động + Transistor đệm** | Active Buzzer 5V + Transistor 2N2222 + Trở 1k| 1 bộ | 4.000đ | 4.000đ | Đệm dòng bảo vệ chân GPIO PB5 của STM32 |
 | 12 | **Khoang chứa hàng** | Hộp nhựa mini có nắp | 1 | 10.000đ | 10.000đ | Đặt ở nửa sau thân xe để chở khay linh kiện |
-| 13 | **Pin sạc Li-ion 18650** | Cell 18650 xả cao $\ge 10\text{A}$ (2200-2600mAh) | 5 viên | 32.000đ | 160.000đ | 3 viên cho Nhánh A (Pi), 2 viên cho Nhánh B (Motor) |
-| 14 | **Khay pin 3 cell (3S)** | Khay 3 pin 18650 nối tiếp có dây ra | 1 cái | 12.000đ | 12.000đ | Cấp nguồn 11.1V cho mạch Buck hạ áp Pi 4 |
-| 15 | **Khay pin 2 cell (2S)** | Khay 2 pin 18650 nối tiếp có dây ra | 1 cái | 10.000đ | 10.000đ | Cấp nguồn 7.4V cho mạch công suất động cơ |
-| 16 | **Mạch hạ áp Buck DC-DC** | Module XL4015 (5A có tản nhiệt nhôm) | 1 | 28.000đ | 28.000đ | Hạ từ 11.1V xuống đúng **5.15V** sạch nuôi Pi 4 & STM32 |
-| 17 | **Linh kiện bảo vệ, lọc nguồn & phân áp** | Tụ $2200\mu\text{F}/16\text{V}$, tụ lọc motor $470\mu\text{F}$, 4 tụ $100\mu\text{F}$, 9 tụ $100\text{nF}$, 2 tụ $1\text{nF}$, trở đệm $330\Omega$, trở phân áp $10\text{k}+3.3\text{k}$ (PA6, PA7), TVS 6.0V (**SMAJ6.0A** / **1.5KE6.8A**), Polyfuse 3A | 1 gói | 10.000đ | 10.000đ | Lọc nguồn Pi, lọc motor, phân áp ADC kép, đệm RC encoder & siêu âm, bảo vệ OVP |
-| 18 | **Công tắc nguồn & E-Stop** | 2 Công tắc bập bênh nhỏ + 1 Nút E-Stop cơ khí | 3 cái | 3.000đ - 5.000đ | 11.000đ | Bật/tắt riêng biệt Nguồn Pi, Nguồn Motor và Dừng khẩn |
+| 13 | **Pin sạc Li-ion 18650 (4S)** | Cell 18650 xả cao $\ge 10\text{A}$ (Sony VTC / Lishen 2500mAh) | 4 viên | 32.000đ | 128.000đ | 4 cell mắc nối tiếp tạo khối nguồn 14.8V - 16.8V cấp toàn xe |
+| 14 | **Khay pin 4 cell (4S)** | Khay 4 pin 18650 nối tiếp có dây ra Đỏ/Đen | 1 cái | 12.000đ | 12.000đ | Khay pin 4S duy nhất gá lắp cố định trên thân xe |
+| 15 | **Khối chốt nguồn thông minh** | P-MOSFET IRF9540N + Transistor S8050 (Q3) + Zener 12V 1N4742A + Diode 1N4148 (D5) + Trở R13, R14, R30, R31, R34 + Nút SW1/J19 | 1 bộ | 12.000đ | 12.000đ | Bật/tắt mềm toàn xe, tự ngắt nguồn tuyệt đối (0µA) bảo vệ Pi & STM32 |
+| 16 | **Mạch hạ áp Buck DC-DC** | Module XL4015 (5A có tản nhiệt nhôm) | 1 | 28.000đ | 28.000đ | Hạ từ 14.8V xuống đúng **5.15V** sạch nuôi Pi 4, STM32 & Cảm biến |
+| 17 | **Linh kiện bảo vệ, lọc nguồn & phân áp** | Tụ $2200\mu\text{F}/16\text{V}$, tụ lọc motor $470\mu\text{F}$, 4 tụ $100\mu\text{F}$, 9 tụ $100\text{nF}$, 2 tụ $1\text{nF}$, trở đệm $330\Omega$, trở phân áp $18\text{k}+3.3\text{k}$ (PA6 đo pin 4S), TVS 6.0V (**SMAJ6.0A** / **1.5KE6.8A**), Polyfuse 3A | 1 gói | 10.000đ | 10.000đ | Lọc nguồn Pi, lọc motor, phân áp ADC 4S, đệm RC encoder & siêu âm, bảo vệ OVP |
+| 18 | **Nút dừng khẩn cấp cơ khí** | Nút nhấn tự khóa cơ khí phi 16mm (E-Stop) | 1 cái | 25.000đ | 25.000đ | Ngắt cơ học tức thời nguồn động lực cấp cho Driver L298N |
 | 19 | **Đầu giắc cắm nguồn Pi 4** | Giắc USB Type-C đực (bo 2 chân hàn) | 1 cái | 5.000đ | 5.000đ | Hàn dây 5.15V cắm cổng Type-C của Pi 4 |
-| 20 | **Đốc sạc pin 18650 rời** | Đốc sạc đôi pin Li-ion cắm điện 220V | 1 cái | 28.000đ | 28.000đ | Sạc rời pin độc lập, an toàn phòng chống cháy nổ |
+| 20 | **Đốc sạc 4 khe pin 18650 rời**| Đốc sạc 4 khe pin Li-ion cắm điện 220V | 1 cái | 45.000đ | 45.000đ | Sạc rời độc lập từng cell, an toàn phòng chống cháy nổ |
 | 21 | **Dây nối, ốc trụ đồng M3** | Dây bus Dupont cái-cái + Trụ đồng M3 | 1 gói | 25.000đ | 25.000đ | Đấu nối tín hiệu, bắt cố định bo mạch |
-| **TỔNG** | **TỔNG CHI PHÍ MUA MỚI THỰC TẾ (CỘNG CHÍNH XÁC 100%):** | | | | **597.000đ** | Dự toán toàn diện, chuẩn hóa 100% theo bản vẽ KiCad |
+| **TỔNG** | **TỔNG CHI PHÍ MUA MỚI THỰC TẾ (CỘNG CHÍNH XÁC 100%):** | | | | **567.000đ** | Dự toán toàn diện, chuẩn hóa 100% theo bản vẽ Pin 4S KiCad |
 
-*(Kiểm toán phép tính số học: $48k + 16k + 54k + 28k + 115k + 32k + 10k + 4k + 10k + 160k + 12k + 10k + 28k + 10k + 11k + 5k + 28k + 25k = \mathbf{597.000đ}$. Toàn bộ tổng ngân sách dưới 600.000đ, hoàn toàn nằm trong khả năng tài chính của sinh viên).*
+*(Kiểm toán phép tính số học: $48k + 16k + 54k + 28k + 115k + 32k + 128k + 12k + 12k + 28k + 10k + 25k + 5k + 45k + 25k = \mathbf{567.000đ}$. Toàn bộ tổng ngân sách tiết kiệm thêm 30.000đ so với mạch cũ 5 cell).*
 
 ---
 
@@ -409,9 +422,13 @@ Tại mỗi chu kỳ xử lý ảnh thứ $k$ với timestamp thực tế $t_k$:
 | **Cảm biến Đĩa quang (Encoder)**| **D0 (Trái)** | **PB6** | EXTI Line 6 (Ngắt đếm bánh Trái) qua **mạch lọc RC $330\Omega + 1\text{nF}$** chống tia lửa chổi than |
 | *(2 Module LM393)* | **D0 (Phải)** | **PB7** | EXTI Line 7 (Ngắt đếm bánh Phải) qua **mạch lọc RC $330\Omega + 1\text{nF}$** chống tia lửa chổi than |
 | | `VCC` / `GND` | **+5V / GND** | Cấp nguồn nuôi cảm biến từ đường nguồn sạch 5V |
-| **Giám sát Điện áp Pin 3S** | Cầu phân áp 3S_V | **PA6** | ADC1 Channel 6: Cầu trở $R1=10\text{k}\Omega / R2=3.3\text{k}\Omega$ + tụ lọc $C9=100\text{nF}$ (Hệ số $0.2481$) |
-| **Giám sát Điện áp Motor (2S)**| Cầu phân áp 12V/8V4 | **PA7** | ADC1 Channel 7: Cầu trở $R13=10\text{k}\Omega / R14=3.3\text{k}\Omega$ + tụ lọc $C10=100\text{nF}$ (*Cải tiến mới*) |
-| **Còi Báo động & LED Báo Động** | Base Transistor Q1 | **PB5** | GPIO Output qua trở $R6=1\text{k}\Omega$ kích mở 2N2222, có trở xả $R5=10\text{k}\Omega$, kích còi BZ1 và LED D3 |
+| **Giám sát Điện áp Pin 4S** | Cầu phân áp 4S_V | **PA6** (Pin 31) | ADC1 Channel 6: Cầu trở $R_1=43\text{k}\Omega$ (hoặc $18\text{k}\Omega$) / $R_2=10\text{k}\Omega$ (hoặc $3.3\text{k}\Omega$) + tụ lọc $C_9=100\text{nF}$ |
+| **Dự phòng mở rộng** | Không nối (NC) | **PA7** | **Giải phóng tự do:** Bỏ cầu trở pin 2S cũ, chân PA7 để ngỏ làm chân dự phòng |
+| **Chốt giữ nguồn xe (Power Latch)** | Kích Base Q3 (S8050) | **PB0** (Pin 33) | GPIO Output Push-Pull: Xuất mức 1 kích Base Q3 (S8050 NPN) qua trở đệm $R_{30}=1\text{k}\Omega$ (có trở xả $R_{31}=10\text{k}\Omega$) kéo chân Gate qua $R_{13}=10\text{k}\Omega$ giữ nguồn toàn xe |
+| **Dự phòng mở rộng 2** | Không nối (NC) | **PA8** | **Giải phóng tự do:** Trước đây dùng làm POWER_HOLD, nay chuyển sang PB0 (Pin 33) |
+| **Bắt tay nhận Pi 4 đã Halt** | Cọc J3 (PI-HALT) | **PB10** (Pin 35) | GPIO Input: Đọc xung 3.3V từ Pi 4 GPIO 26 qua trở đệm $R_{32}=1\text{k}\Omega$ và trở xả mass $R_{33}=10\text{k}\Omega$ để biết Pi đã tắt hẳn |
+| **Nhận diện nút bấm tắt máy** | Nối vào Anot Diode D5 | **PB1** (Pin 34) | GPIO Input Pull-up: Anot D5 nối PB1, Catot nối SW1 qua $R_{34}=10\text{k}\Omega$; nhận diện người dùng nhấn giữ nút để kích hoạt Safe-Shutdown |
+| **Còi Báo động & LED Báo Động** | Base Transistor Q1 | **PB5** (Pin 13) | GPIO Output qua trở $R_6=1\text{k}\Omega$ kích mở S8050 (hoặc 2N2222), có trở xả $R_5=10\text{k}\Omega$, kích còi BZ1 và LED D3 |
 | **3 Cảm biến Siêu âm HC-SR04** | `Trig` (Trái) | **PB12** | GPIO Output Push-Pull qua trở đệm $R25=330\Omega$ (US1) |
 | *(Tích hợp phân áp Echo)* | `Echo` (Trái) | **PB13** | GPIO Input: Qua cầu chia áp $R7=1\text{k}\Omega / R8=2\text{k}\Omega$ hạ từ $5\text{V} \to 3.33\text{V}$ an toàn |
 | | `Trig` (Giữa) | **PB14** | GPIO Output Push-Pull qua trở đệm $R26=330\Omega$ (US2) |
