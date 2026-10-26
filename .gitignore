@@ -9,3 +9,19 @@ _autosave-*
 *.kicad_pcb-bak
 *.kicad_sch-bak
 
+Debug/
+Release/
+
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.su
+.settings/
+.vscode/
+
+*.log
+*.tmp
+*.bak
