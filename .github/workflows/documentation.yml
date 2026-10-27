@@ -1,0 +1,80 @@
+name: Documentation Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'stm32/**'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Installing
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+
+      - name: CSS 
+        run: |
+          git clone --depth 1 https://github.com/jothepro/doxygen-awesome-css.git doxygen-awesome-css
+
+      - name: Doxyfile
+        run: |
+          doxygen -g Doxyfile
+          
+          cat << 'EOF' >> Doxyfile
+          PROJECT_NAME           = "${{ github.event.repository.name }}"
+          OUTPUT_DIRECTORY       = docs
+          INPUT                  = .
+          RECURSIVE              = YES
+          FILE_PATTERNS          = *.c *.cpp *.h *.hpp *.py *.java
+          EXTRACT_ALL            = YES
+          GENERATE_HTML          = YES
+          GENERATE_LATEX         = NO
+          HAVE_DOT               = YES
+          CALL_GRAPH             = YES
+          CALLER_GRAPH           = YES
+
+          GENERATE_TREEVIEW      = YES
+          DISABLE_INDEX          = NO
+          FULL_SIDEBAR           = NO
+          HTML_COLORSTYLE        = LIGHT
+          HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css \
+                                   doxygen-awesome-css/doxygen-awesome-sidebar-only.css
+          HTML_EXTRA_FILES       = doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js
+          EOF
+
+      - name: Styling
+        run: |
+          doxygen -w html header.html footer.html stylesheet.css Doxyfile
+          sed -i '/<\/head>/i <script type="text/javascript" src="$relpath^doxygen-awesome-darkmode-toggle.js"></script><script type="text/javascript">DoxygenAwesomeDarkModeToggle.init()</script>' header.html
+          echo "HTML_HEADER = header.html" >> Doxyfile
+
+      - name: Compiling
+        run: doxygen Doxyfile
+
+      - name: Load
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs/html'
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
