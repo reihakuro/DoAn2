@@ -1,11 +1,18 @@
 /**
  ******************************************************************************
  * @file    amr_battery.c
- * @brief   Giam sat pin 4S: ADC 12-bit (da hieu chuan), loc IIR so nguyen,
- *          nguong co tre (hysteresis) va thoi gian xac nhan chong sut ap ao.
+ * @brief   Hiện thực module giám sát pin Li-ion 4S: ADC 12-bit, lọc số IIR và máy trạng thái bảo vệ.
+ * @details
+ * Mạch phân áp tỉ lệ 100k/22k nối tới PA6 (ADC1_IN6):
+ * @f[
+ * V_{\text{bat}} = \text{ADC}_{\text{raw}} \times \frac{3300}{4095} \times \frac{100 + 22}{22} \approx \text{ADC}_{\text{raw}} \times 4.4727\text{ mV}
+ * @f]
+ * - Khi pin đầy (16.8 V), điện áp đặt lên chân PA6 xấp xỉ 2.60 V (< 3.3 V, an toàn cho vi điều khiển).
+ * - Sử dụng bộ lọc đệ quy IIR bậc 1 số nguyên fixed-point nhằm triệt tiêu dao động sụt áp tức thời.
  *
- *  Vbat = raw * 3.3 / 4095 / Kdiv,  Kdiv = 3.3 / (18 + 3.3) = 0.15493
- *  -> 16.8 V (pin day) cho 2.60 V tai PA6 (< 3.3 V, an toan).
+ * @author  Nhóm Đề án 2 - Robot vận chuyển nội bộ
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_battery.h"

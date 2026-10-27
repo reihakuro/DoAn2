@@ -1,41 +1,77 @@
 /**
  ******************************************************************************
  * @file    amr_sonar.c
- * @brief   May trang thai quet TDM 3 HC-SR04 + loc trung vi 3 mau.
+ * @brief   Hiện thực máy trạng thái quét TDM 3 cảm biến siêu âm HC-SR04 và bộ lọc trung vị 3 mẫu.
+ * @details
+ * Điều phối chu kỳ quét tuần tự theo thời gian thực:
+ * - t = 0: Kích xung Trig mức HIGH trong 12 us, sau đó kéo xuống LOW.
+ * - t xấp xỉ 0.45 ms: Chân Echo dựng lên HIGH sau khi module phát xong chùm 8 chu kỳ sóng 40 kHz.
+ * - Chân Echo hạ xuống LOW: Đo khoảng thời gian xung phản xạ để tính khoảng cách theo vận tốc 343 m/s.
+ * - t = 25 ms: Kết thúc khe thời gian hiện tại, tiêu tán hoàn toàn âm vang trước khi chuyển sang cảm biến kế tiếp.
  *
- *  Dong thoi gian 1 khe (25 ms):
- *    t=0      : Trig HIGH 12 us -> LOW
- *    ~0.45 ms : Echo len HIGH (HC-SR04 phat 8 xung 40 kHz xong)
- *    Echo LOW : do rong xung = thoi gian di + ve cua song am
- *    t=25 ms  : chuyen sang cam bien ke tiep (du thoi gian tan am vang)
- *
- *  d[mm] = t[us] * 343 [m/s] / 2 / 1000 = t * 343 / 2000
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_sonar.h"
 #include "amr_time.h"
 
+/**
+ * @enum SonarState_t
+ * @brief Các trạng thái trong chu trình quét của một khe thời gian cảm biến siêu âm.
+ */
 typedef enum
 {
+    /** @brief Trạng thái phát xung kích hoạt Trigger mức HIGH (12 µs). */
     SONAR_ST_TRIGGER = 0,
+
+    /** @brief Trạng thái chờ cạnh lên (Rising Edge) của chân Echo phản hồi. */
     SONAR_ST_WAIT_RISE,
+
+    /** @brief Trạng thái chờ cạnh xuống (Falling Edge) của chân Echo để đo độ rộng xung. */
     SONAR_ST_WAIT_FALL,
+
+    /** @brief Trạng thái chờ hết khe thời gian (25 ms) để triệt tiêu sóng phản xạ dội âm. */
     SONAR_ST_WAIT_SLOT_END
 } SonarState_t;
 
+/**
+ * @struct Sonar_t
+ * @brief Cấu trúc dữ liệu cấu hình phần cứng và bộ đệm lịch sử đo đạc cho một cảm biến siêu âm.
+ */
 typedef struct
 {
+    /** @brief Cổng GPIO của chân phát xung Trigger. */
     GPIO_TypeDef *trig_port;
+
+    /** @brief Chân GPIO của tín hiệu Trigger. */
     uint16_t      trig_pin;
+
+    /** @brief Cổng GPIO của chân thu tín hiệu Echo. */
     GPIO_TypeDef *echo_port;
+
+    /** @brief Chân GPIO của tín hiệu Echo. */
     uint16_t      echo_pin;
 
-    uint16_t hist[3];           /* 3 mau gan nhat cho loc trung vi  */
+    /** @brief Mảng lưu 3 mẫu đo khoảng cách gần nhất dùng cho bộ lọc trung vị (Median Filter). */
+    uint16_t hist[3];
+
+    /** @brief Chỉ số vị trí ghi mẫu kế tiếp vào mảng lịch sử. */
     uint8_t  hist_idx;
+
+    /** @brief Cờ đánh dấu mảng lịch sử đã được lấp đầy đủ 3 mẫu hay chưa. */
     bool     hist_filled;
+
+    /** @brief Khoảng cách đo được thô ở lần lấy mẫu gần nhất chưa qua lọc (mm). */
     uint16_t raw_mm;
+
+    /** @brief Khoảng cách đo được sau khi đã lọc trung vị 3 mẫu (mm). */
     uint16_t filt_mm;
+
+    /** @brief Bộ đếm số chu kỳ liên tiếp không nhận được phản hồi xung Echo. */
     uint8_t  fail_count;
+
+    /** @brief Cờ báo trạng thái lỗi phần cứng cảm biến (mất kết nối / hỏng module). */
     bool     faulty;
 } Sonar_t;
 

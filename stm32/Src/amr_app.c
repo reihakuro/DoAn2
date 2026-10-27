@@ -1,19 +1,23 @@
 /**
  ******************************************************************************
  * @file    amr_app.c
- * @brief   Supervisor Giai doan 1 - vong lap hop tac (cooperative super-loop).
+ * @brief   Hiện thực tầng điều phối giám sát hệ thống (Supervisor Layer) cho robot AMR.
+ * @details
+ * Quản lý vòng lặp điều phối hợp tác đa chu kỳ (Cooperative Super-Loop Scheduler):
+ * - Tác vụ mỗi vòng lặp: Polling xung Echo siêu âm microsecond (@ref AMR_Sonar_Process)
+ *   và bơm bộ đệm truyền UART (@ref AMR_Debug_Pump).
+ * - Tác vụ mỗi 10 ms: Quản lý nguồn/nút nhấn -> Đo điện áp pin -> Encoder/chống kẹt ->
+ *   Kiểm tra vật cản -> Cập nhật Self-Test -> Điều khiển dốc gia tốc PWM động cơ -> Còi Buzzer.
+ * - Tác vụ mỗi 200 ms: Đóng gói và phát bản tin Telemetry qua cổng UART.
  *
- *  Lich thuc thi:
- *    Moi vong lap  : AMR_Sonar_Process() (polling Echo do chinh xac us),
- *                    AMR_Debug_Pump()
- *    Moi 10 ms     : Nut/Nguon -> Pin -> Encoder/Stall -> Vat can -> Self-Test
- *                    -> Dong co (ramp) -> Coi
- *    Moi 200 ms    : Log telemetry qua UART (neu bat)
+ * Phân cấp ưu tiên can thiệp an toàn (Safety Priority Hierarchy):
+ * 1. Mức 1 - Tắt máy: Khóa toàn bộ động cơ, cắt ga về 0.
+ * 2. Mức 2 - Kẹt cơ khí bánh xe (Stall Latched): Phanh dừng và chốt khóa ga cho tới khi xóa lỗi.
+ * 3. Mức 3 - Phát hiện vật cản phía trước: Phanh dừng và chỉ chặn chiều tiến, cho phép lùi/quay.
  *
- *  Thu tu uu tien an toan (cao -> thap):
- *    1. Dang tat may          : khoa dong co hoan toan
- *    2. Ket banh (latched)    : phanh + khoa, cho nguoi xoa loi
- *    3. Vat can phia truoc    : phanh + chan rieng chieu tien, tu nha khi het
+ * @author  Nhóm Đề án 2 - Robot vận chuyển nội bộ
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_app.h"
@@ -41,10 +45,25 @@ static bool     s_shutdown_handled;
 static uint32_t s_flags;
 
 /* ===========================================================================
- *  SELF-TEST (Giai doan 1): kich ban chay thu khi nhan nhanh SW1
- *  -> KE GAM XE LEN CAO cho 4 banh quay tu do truoc khi thu!
+ *  SELF-TEST (Giai đoạn 1): Kịch bản chạy thử nghiệm khi nhấn nhanh nút SW1.
+ *  CẢNH BÁO: KÊ GẦM XE LÊN CAO để 4 bánh quay tự do trên không trước khi thử!
  * ===========================================================================*/
-typedef struct { int8_t left; int8_t right; uint16_t ms; } SelfTestStep_t;
+
+/**
+ * @struct SelfTestStep_t
+ * @brief Định nghĩa thông số của một bước thực nghiệm trong quy trình tự kiểm tra phần cứng.
+ */
+typedef struct
+{
+    /** @brief Lệnh vận tốc động cơ trái (`-100` đến `+100`). */
+    int8_t   left;
+
+    /** @brief Lệnh vận tốc động cơ phải (`-100` đến `+100`). */
+    int8_t   right;
+
+    /** @brief Thời gian duy trì bước kiểm tra (Milliseconds). */
+    uint16_t ms;
+} SelfTestStep_t;
 
 static const SelfTestStep_t k_selftest[] =
 {

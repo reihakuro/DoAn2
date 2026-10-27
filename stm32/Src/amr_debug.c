@@ -1,7 +1,14 @@
 /**
  ******************************************************************************
  * @file    amr_debug.c
- * @brief   Ring buffer TX cho USART1, bom bang polling co TXE (khong chan).
+ * @brief   Hiện thực cơ chế truyền nhật ký gỡ lỗi qua hàng đệm vòng tròn và ngoại vi USART1.
+ * @details
+ * Cung cấp hàng đợi Ring Buffer không chặn, định dạng chuỗi số nguyên và bơm từng byte
+ * ra phần cứng thông qua cờ trạng thái TXE mà không cần phụ thuộc vào ngắt truyền.
+ *
+ * @author  Nhóm Đề án 2 - Robot vận chuyển nội bộ
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_debug.h"

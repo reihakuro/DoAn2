@@ -344,7 +344,7 @@
  * Xe được bố trí 3 module cảm biến siêu âm hướng về phía trước để bao quát toàn diện vùng không gian di chuyển:
  * - Kênh 0: Cảm biến góc quét bên trái (Trig: PB12, Echo: PB13).
  * - Kênh 1: Cảm biến hướng tâm chính giữa (Trig: PB14, Echo: PB15).
- * - Kênh 2: Cảm biến góc quét bên phải (Trig: PA8, Echo: PA11).
+ * - Kênh 2: Cảm biến góc quét bên phải (Trig: PB8, Echo: PB9).
  *
  * @par Đơn vị:
  * Cảm biến (Sensors).

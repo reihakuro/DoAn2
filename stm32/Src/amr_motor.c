@@ -1,29 +1,55 @@
 /**
  ******************************************************************************
  * @file    amr_motor.c
- * @brief   Driver dong co L298N: PWM 1 kHz, ramp mem, phanh khan cap.
+ * @brief   Hiện thực module điều khiển cầu H L298N, thuật toán tăng tốc độ dốc và phanh khẩn cấp.
+ * @details
+ * Quản lý trực tiếp các thanh ghi Capture/Compare Register (CCR) của Timer 2 và chân GPIO điều khiển hướng,
+ * thực hiện bảo vệ quá dòng/sụt áp thông qua thuật toán phần mềm Slew-rate Ramp Limiter.
  *
- *  Bang chan ly L298N (moi kenh):
- *      EN   IN1  IN2   | Trang thai
- *      PWM   1    0    | Tien (theo duty)
- *      PWM   0    1    | Lui  (theo duty)
- *      1     0    0    | Phanh (2 dau dong co cung noi xuong GND)
- *      0     x    x    | Tha troi (coast)
+ * ### Bảng sự thật trạng thái cầu H L298N (cho mỗi kênh):
+ * | EN (PWM) | IN1 | IN2 | Chế độ hoạt động |
+ * | :---: | :---: | :---: | :--- |
+ * | PWM | 1 | 0 | Chạy tiến (vận tốc tỷ lệ thuận theo Duty Cycle) |
+ * | PWM | 0 | 1 | Chạy lùi (vận tốc tỷ lệ thuận theo Duty Cycle) |
+ * | 1 | 0 | 0 (hoặc 1, 1) | Phanh điện động học (nối tắt 2 đầu động cơ xuống GND) |
+ * | 0 | x | x | Thả trôi tự do (Coast mode, tiêu tán nhiệt) |
+ *
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_motor.h"
 #include "amr_time.h"
 #include "tim.h"
 
+/**
+ * @struct MotorChannel_t
+ * @brief Cấu trúc dữ liệu cấu hình phần cứng và trạng thái điều khiển cho một kênh động cơ.
+ */
 typedef struct
 {
-    volatile uint32_t *ccr;     /* Thanh ghi CCR cua kenh TIM2         */
-    GPIO_TypeDef      *port;    /* Cong GPIO cua 2 chan chieu          */
-    uint16_t           pin_a;   /* IN1 / IN3                           */
-    uint16_t           pin_b;   /* IN2 / IN4                           */
-    int16_t            target;  /* CCR co dau mong muon (sau gioi han)  */
-    int16_t            current; /* CCR co dau dang xuat                */
-    int16_t            cmd;     /* Lenh -100..100 nguoi dung yeu cau   */
+    /** @brief Con trỏ trỏ trực tiếp tới thanh ghi CCR của kênh PWM tương ứng trên Timer 2. */
+    volatile uint32_t *ccr;
+
+    /** @brief Cổng GPIO chứa 2 chân điều khiển logic chiều quay (IN1/IN2 hoặc IN3/IN4). */
+    GPIO_TypeDef      *port;
+
+    /** @brief Chân GPIO logic chiều thứ nhất (IN1 hoặc IN3). */
+    uint16_t           pin_a;
+
+    /** @brief Chân GPIO logic chiều thứ hai (IN2 hoặc IN4). */
+    uint16_t           pin_b;
+
+    /** @brief Giá trị CCR có dấu mục tiêu cần đạt tới sau khi qua bộ kẹp biên an toàn. */
+    int16_t            target;
+
+    /** @brief Giá trị CCR có dấu đang xuất thực tế xuống thanh ghi sau khi qua bộ lọc dốc ramp. */
+    int16_t            current;
+
+    /** @brief Giá trị lệnh vận tốc người dùng/tầng trên yêu cầu trong dải chuẩn hóa `[-100, +100]`. */
+    int16_t            cmd;
+
+    /** @brief Cờ cấu hình đảo ngược chiều quay logic bằng phần mềm. */
     bool               invert;
 } MotorChannel_t;
 

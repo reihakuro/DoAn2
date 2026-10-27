@@ -1,27 +1,60 @@
 /**
  ******************************************************************************
  * @file    amr_encoder.c
- * @brief   Dem xung encoder bang EXTI + loc glitch, toc do, odometry, stall.
+ * @brief   Hiện thực module đếm xung ngắt EXTI Encoder quang LM393 và chẩn đoán kẹt bánh.
+ * @details
+ * Xử lý ngắt ngoài cạnh lên từ 2 kênh encoder bánh trái (PB6) và bánh phải (PB7),
+ * áp dụng bộ lọc khử nhiễu nảy xung, tích lũy quãng đường Odometry và máy trạng thái phát hiện kẹt cơ khí.
+ *
+ * @author  Nhóm Đề án 2 - Robot vận chuyển nội bộ
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_encoder.h"
 #include "amr_time.h"
 
+/**
+ * @struct EncoderState_t
+ * @brief Cấu trúc dữ liệu nội bộ lưu trạng thái đếm xung và đo lường cho một kênh encoder.
+ */
 typedef struct
 {
-    /* --- Cap nhat trong ngat --- */
-    volatile uint32_t total;        /* Tong xung tuyet doi                    */
-    volatile int32_t  odometry;     /* Xung co dau                            */
-    volatile uint16_t last_us;      /* Moc us cua canh hop le gan nhat        */
-    volatile uint32_t last_ms;      /* Moc ms cua canh hop le gan nhat        */
-    volatile int8_t   dir;          /* +1 / -1, do vong lap chinh cap nhat    */
-    volatile uint32_t glitches;     /* So canh nhieu bi loai (chan doan)      */
+    /* --- Các trường cập nhật bên trong trình phục vụ ngắt ISR --- */
 
-    /* --- Chi dung trong vong lap chinh --- */
-    uint32_t win_count;             /* Gia tri total tai dau cua so toc do    */
+    /** @brief Tổng số lượng xung ngắt ngoài tuyệt đối đếm được (tăng liên tục). */
+    volatile uint32_t total;
+
+    /** @brief Quãng đường tích lũy có dấu (tính theo số lượng xung, tiến cộng lùi trừ). */
+    volatile int32_t  odometry;
+
+    /** @brief Mốc thời gian microsecond của cạnh xung hợp lệ gần nhất (dùng cho lọc glitch). */
+    volatile uint16_t last_us;
+
+    /** @brief Mốc thời gian millisecond của cạnh xung hợp lệ gần nhất. */
+    volatile uint32_t last_ms;
+
+    /** @brief Chiều quay quy ước hiện tại (+1: tiến, -1: lùi) do vòng lặp chính suy diễn từ PWM. */
+    volatile int8_t   dir;
+
+    /** @brief Bộ đếm số lượng cạnh xung nhiễu bị bộ lọc phần mềm loại bỏ. */
+    volatile uint32_t glitches;
+
+    /* --- Các trường chỉ được truy cập và cập nhật trong vòng lặp chính --- */
+
+    /** @brief Giá trị total ghi nhận tại thời điểm bắt đầu cửa sổ tính vận tốc. */
+    uint32_t win_count;
+
+    /** @brief Vận tốc góc tức thời có dấu tính toán được trong cửa sổ gần nhất (pps). */
     int16_t  speed_pps;
-    uint32_t stall_count;           /* Gia tri total tai moc kiem tra stall   */
+
+    /** @brief Giá trị total ghi nhận tại mốc bắt đầu theo dõi kẹt cơ khí. */
+    uint32_t stall_count;
+
+    /** @brief Mốc thời gian millisecond bắt đầu xuất hiện điều kiện nghi ngờ kẹt bánh. */
     uint32_t stall_ref_ms;
+
+    /** @brief Cờ trạng thái xác nhận sự cố kẹt cơ khí bánh xe đã được chốt khóa. */
     bool     stalled;
 } EncoderState_t;
 

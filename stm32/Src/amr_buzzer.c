@@ -1,7 +1,14 @@
 /**
  ******************************************************************************
  * @file    amr_buzzer.c
- * @brief   Bo phat mau coi dua tren bang thoi gian (ON/OFF xen ke, ms).
+ * @brief   Hiện thực bộ điều khiển phát các mẫu âm thanh cảnh báo bằng còi Buzzer.
+ * @details
+ * Quản lý chuỗi thời gian bật/tắt tiếp điểm transistor 2N2222 (PB5) theo máy trạng thái thời gian thực,
+ * hỗ trợ các kiểu âm thanh phản hồi, cảnh báo pin yếu và báo động khẩn cấp không chặn CPU.
+ *
+ * @author  Nhóm Đề án 2 - Robot vận chuyển nội bộ
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_buzzer.h"

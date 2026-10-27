@@ -1,7 +1,12 @@
 /**
  ******************************************************************************
  * @file    amr_time.c
- * @brief   Khoi tao TIM4 lam bo dem micro-giay chay tu do (1 MHz).
+ * @brief   Hiện thực bộ định thời vi giây độc lập sử dụng trực tiếp thanh ghi TIM4.
+ * @details
+ * Cấu hình tần số đếm 1 MHz, chế độ tự do và các hàm đọc thời gian, trễ xung vi giây.
+ *
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_time.h"

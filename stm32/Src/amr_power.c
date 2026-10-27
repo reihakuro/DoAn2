@@ -1,8 +1,16 @@
 /**
  ******************************************************************************
  * @file    amr_power.c
- * @brief   May trang thai tat nguon an toan + doc nut SW1 (chong doi, nhan
- *          nhanh / nhan giu) + chong doi tin hieu Halt tu Raspberry Pi.
+ * @brief   Hiện thực module quản lý chốt nguồn thông minh (Power Latch) và tắt máy an toàn.
+ * @details
+ * Quản lý máy trạng thái ngắt nguồn kết hợp với Raspberry Pi:
+ * - Đọc và lọc chống rung tiếp điểm cơ khí cho nút nhấn nguồn SW1 (PB1).
+ * - Giải mã cử chỉ nhấn nhả nhanh (Self-Test) và nhấn giữ (Power-Off).
+ * - Lọc tín hiệu xác nhận tắt máy (GPIO26 Halt) từ Raspberry Pi qua chân PB10.
+ * - Điều khiển chân giữ nguồn PB0 để đóng/ngắt P-MOSFET nguồn chính.
+ *
+ * @version 2.1
+ * @date    2026
  ******************************************************************************
  */
 #include "amr_power.h"
