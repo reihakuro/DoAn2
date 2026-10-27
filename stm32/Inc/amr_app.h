@@ -1,9 +1,12 @@
 /**
  ******************************************************************************
  * @file    amr_app.h
- * @brief   Tang giam sat (Supervisor) Giai doan 1: dieu phoi tat ca module,
- *          xu ly an toan (vat can, ket banh, pin, tat may), Self-Test va
- *          telemetry. main.c chi can goi AMR_App_Init() va AMR_App_Loop().
+ * @brief   
+ * Giao diện debug module
+ * @details
+ * - Xử lý thông tin an toàn khi có vật cản, kẹt bánh, pin, tắt máy, 
+ * - Self-Test và telemetry. 
+ * - main.c chỉ cần gọi AMR_App_Init() và AMR_App_Loop().
  ******************************************************************************
  */
 #ifndef INC_AMR_APP_H_

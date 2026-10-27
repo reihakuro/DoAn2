@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
-  * File Name          : ADC.h
-  * Description        : This file provides code for the configuration
+  * @file              : adc.h
+  * @brief             : This file provides code for the configuration
   *                      of the ADC instances.
   ******************************************************************************
   * @attention
